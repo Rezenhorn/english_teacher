@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}
+List of students
+{% endblock %}
+{% block content %}
+    <h2 style="text-align: center">Students</h2>
+    <hr>
+    <div class="list-group">
+        {% for student in student_list %}
+            <a href="{% url 'students:student_card' student.pk %}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ student }}</h5>
+                    <small>{{ student.age }} years old</small>
+                </div>
+                <p class="mb-1">{{ student.aim }}</p>
+            </a>
+        {% endfor %}
+    </ul>
+{% endblock %}

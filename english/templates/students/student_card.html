@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ student }} card
+{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{ student }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{ student.aim }}</h6>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="card-link">Card link</a>
+    <a href="#" class="card-link">Another link</a>
+  </div>
+</div>
+{% if student.homework %}
+  <h3 style="text-align: center;padding-top: 20px;padding-bottom: 20px;"> Homework: </h3>
+  {% for homework in student.homework.all %}
+  <div class="card">
+    <div class="card-header">
+      Homework for {{ homework.date|date:"d E Y" }}
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{ homework.description }}</p>
+    </div>
+  </div>
+  <hr>
+  {% endfor %}
+{% endif %}
+{% endblock %}

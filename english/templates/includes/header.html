@@ -1,0 +1,36 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'about:index' %}">
+    <img src="{% static 'img/logo.png' %}" width="35" height="35" class="d-inline-block align-top" alt="">
+    Your Perfect Tutor</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+      <ul class="nav nav-pills">
+        {% if request.user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <span class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">User: <b style="color: black">{{ user }}</b></span>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item">
+              <a class="nav-link" href="{% url 'users:password_change_form' %}">Change password</a>
+            </li>
+            <li class="dropdown-item">
+              <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
+            </li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'users:signup' %}">Sign up</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

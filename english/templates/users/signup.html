@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load user_filters %}
+{% block title %}Sign up{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">Sign up</div>
+          <div class="card-body">
+            {% if form.errors %}
+              {% for field in form %}
+                {% for error in field.errors %}
+                  <div class="alert alert-danger">
+                    {{ error|escape }}
+                  </div>
+                {% endfor %}
+              {% endfor %}
+              {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                  {{ error|escape }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            <form method="post" action="{% url 'users:signup' %}">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col">
+                  <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                  {{ form.first_name|addclass:"form-control" }}
+                </div>
+                <div class="col">
+                  <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                  {{ form.last_name|addclass:"form-control" }}
+                </div>
+                <div class="col">
+                  <label for="{{ form.birth_date.id_for_label }}">{{ form.birth_date.label }}</label>
+                  {{ form.birth_date|addclass:"form-control" }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                {{ form.username|addclass:"form-control" }}
+                <small id="{{ form.username.id_for_label }}-help" class="form-text text-muted">{{ form.username.help_text|safe }}</small>
+              </div>
+              <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                {{ form.email|addclass:"form-control" }}
+              </div>
+              <div class="mb-3">
+                <label for="{{ form.aim.id_for_label }}">{{ form.aim.label }}</label>
+                {{ form.aim|addclass:"form-control" }}
+                <small id="{{ form.aim.id_for_label }}-help" class="form-text text-muted">{{ form.aim.help_text|safe }}</small>
+              </div>
+              <div class="mb-3">
+                <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                {{ form.password1|addclass:"form-control" }}
+                <small id="{{ form.password1.id_for_label }}-help" class="form-text text-muted">{{ form.password1.help_text|safe }}</small>
+              </div>
+              <div class="mb-3">
+                <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                {{ form.password2|addclass:"form-control" }}
+                <small id="{{ form.password2.id_for_label }}-help" class="form-text text-muted">{{ form.password2.help_text|safe }}</small>
+              </div>
+              <article style="text-align: center">
+                <button type="submit" class="btn btn-primary">Sign up</button>
+              </article>
+            </form>
+          </div> <!-- card body -->
+        </div> <!-- card -->
+      </div> <!-- col -->
+  </div> <!-- row -->
+{% endblock %}

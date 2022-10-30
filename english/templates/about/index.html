@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}
+  Your Perfect Tutor
+{% endblock %}
+{% block content %}
+{% load static %}
+<div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">Tutor Elizaveta Fomicheva</h5>
+      <p class="card-text">Personal website</p>
+      <a href="{% url 'about:about' %}" class="btn border-btn">About me</a>
+      {% if request.user.is_authenticated and not request.user.is_superuser %}
+      <a href="{% url 'students:student_card' request.user.pk %}" class="btn btn-primary">  My card  </a>
+      {% elif request.user.is_superuser %}
+      <a href="{% url 'students:list' %}" class="btn btn-primary"> Students list </a>
+      {% else %}
+      <a href="{% url 'users:signup' %}" class="btn btn-primary"> Sign up </a>
+      <a href="{% url 'users:login' %}" class="btn border-btn">  Log in   </a>
+      {% endif %}
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-sm-6">
+      <div class="card text-center">
+        <div class="card-body">
+            <img src="{% static 'img/icon_mail.png' %}" height='45px'>
+            <h5 class="card-title" style="padding-top: 10px">Email</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card text-center">
+        <div class="card-body">
+            <img src="{% static 'img/icon_messengers.png' %}" height='45px'>
+            <h5 class="card-title" style="padding-top: 10px">Messengers</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

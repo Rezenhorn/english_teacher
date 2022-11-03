@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+<h2 style="text-align: center">{{ title }}</h2>
+<hr>
+<form method="post" enctype="multipart/form-data" action="{% if form.instance.pk %}{% url 'students:edit_homework' homework.student.username form.instance.pk %}{% else %}{% url 'students:add_homework' username %}{% endif %}">
+  {% csrf_token %}
+  {% include 'includes/generic_form.html' %}
+  <article style="text-align: center">
+    <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Edit homework{% else %}Add homework{% endif %}</button>
+  </article>
+</form>
+{% endblock %}

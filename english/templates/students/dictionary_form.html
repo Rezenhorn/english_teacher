@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %} {% if form.instance.pk %}Edit word{% else %}Add word{% endif %} {% endblock %}
+{% block content %}
+<h2 style="text-align: center">{% if form.instance.pk %}Edit word{% else %}Add new word{% endif %}</h2>
+<hr>
+<form method="post" enctype="multipart/form-data" action="{% url 'students:add_word' username %}">
+  {% csrf_token %}
+  {% include 'includes/generic_form.html' %}
+  <article style="text-align: center">
+    <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Edit word{% else %}Add word{% endif %}</button>
+  </article>
+</form>
+{% endblock %}

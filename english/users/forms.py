@@ -11,7 +11,9 @@ class CreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'birth_date', 'aim')
+        fields = (
+            'first_name', 'last_name', 'username', 'email', 'birth_date', 'aim'
+        )
         widgets = {
             'birth_date': forms.SelectDateWidget(years=range(1950, 2014))
         }

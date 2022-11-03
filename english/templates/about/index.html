@@ -10,7 +10,7 @@
       <p class="card-text">Personal website</p>
       <a href="{% url 'about:about' %}" class="btn border-btn">About me</a>
       {% if request.user.is_authenticated and not request.user.is_superuser %}
-      <a href="{% url 'students:student_card' request.user.pk %}" class="btn btn-primary">  My card  </a>
+      <a href="{% url 'students:student_card' request.user.username %}" class="btn btn-primary">  My card  </a>
       {% elif request.user.is_superuser %}
       <a href="{% url 'students:list' %}" class="btn btn-primary"> Students list </a>
       {% else %}

@@ -18,5 +18,29 @@ class Homework(models.Model):
     )
     done = models.BooleanField(verbose_name="Done", default=False)
 
+    class Meta:
+        ordering = ("-date",)
+
     def __str__(self):
         return self.description[:40]
+
+
+class Dictionary(models.Model):
+    word = models.CharField(max_length=50)
+    translation = models.CharField(max_length=50)
+    example = models.CharField(max_length=100, blank=True, null=True)
+    student = models.ForeignKey(
+        User,
+        verbose_name="Student",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="dictionary"
+    )
+
+    class Meta:
+        ordering = ("word",)
+        verbose_name_plural = "Dictionaries"
+
+    def __str__(self):
+        return self.word

@@ -8,7 +8,7 @@ class SuperuserRequiredMixin(UserPassesTestMixin):
         return self.request.user.is_superuser
 
     def handle_no_permission(self):
-        return redirect('about:index')
+        return redirect("about:index")
 
 
 class SuperuserOrAuthorMixin(UserPassesTestMixin):
@@ -18,4 +18,4 @@ class SuperuserOrAuthorMixin(UserPassesTestMixin):
                 or self.request.user.username == self.kwargs.get("username"))
 
     def handle_no_permission(self):
-        return redirect('about:index')
+        return redirect("about:index")

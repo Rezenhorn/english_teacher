@@ -28,8 +28,8 @@
       <div class="vr"></div>
       {% if request.user.is_superuser %}
       <a href="{% url 'students:edit_homework' student.username homework.pk %}" class="card-link">Edit homework</a>
-      {% endif %}
       <a type="button" class="btn-close" aria-label="Close" href="{% url 'students:delete_homework' student.username homework.pk %}"></a>
+      {% endif %}
     </div>
     <div class="card-body">
       {{ homework.description }}

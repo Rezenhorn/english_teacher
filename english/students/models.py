@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-
 User = get_user_model()
 
 
@@ -41,6 +40,14 @@ class Dictionary(models.Model):
     class Meta:
         ordering = ("word",)
         verbose_name_plural = "Dictionaries"
+
+    def save(self, *args, **kwargs):
+        """Capitalizes first letters in selected fields."""
+        for field_name in ["word", "translation", "example"]:
+            val = getattr(self, field_name, False)
+            if val:
+                setattr(self, field_name, val.capitalize())
+        super(Dictionary, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.word

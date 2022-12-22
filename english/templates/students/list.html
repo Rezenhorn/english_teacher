@@ -5,15 +5,50 @@ List of students
 {% block content %}
 <h2 style="text-align: center">Students</h2>
 <hr>
-<div class="list-group">
-    {% for student in student_list %}
-        <a href="{% url 'students:student_card' student.username %}" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
+<div class="accordion" id="accordionPanelsStayOpenExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+        <h4>Active students</h4>
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+      <div class="accordion-body">
+        <ul class="list-group list-group-flush">
+            {% for student in student_list.active %}
+              <a href="{% url 'students:student_card' student.username %}" class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ student }}</h5>
+                  <small>{{ student.age }} years old</small>
+                </div>
+                <p class="mb-1">{{ student.aim }}</p>
+              </a>
+            {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+        <h4>Inactive students</h4>
+    </button>
+    </h2>
+    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+      <div class="accordion-body">
+        <ul class="list-group list-group-flush">
+          {% for student in student_list.inactive %}
+            <a href="{% url 'students:student_card' student.username %}" class="list-group-item">
+              <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{ student }}</h5>
                 <small>{{ student.age }} years old</small>
-            </div>
-            <p class="mb-1">{{ student.aim }}</p>
-        </a>
-    {% endfor %}
+              </div>
+              <p class="mb-1">{{ student.aim }}</p>
+            </a>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

@@ -2,21 +2,28 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from .forms import DictionaryForm, HomeworkForm
 from .mixins import SuperuserOrAuthorMixin, SuperuserRequiredMixin
-from .models import Dictionary, Homework
+from .models import Dictionary, Homework, Progress
+from .utils import create_dictionary_xls
 
 User = get_user_model()
 
 
 class StudentListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
-    model = User
     template_name = "students/list.html"
     context_object_name = "student_list"
+
+    def get_queryset(self):
+        return {"active": User.objects.filter(is_active=True,
+                                              is_superuser=False),
+                "inactive": User.objects.filter(is_active=False,
+                                                is_superuser=False)}
 
 
 class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
@@ -32,6 +39,7 @@ class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
         student = User.objects.get(username=self.kwargs.get("username"))
         data["title"] = f"{student.first_name}'s dictionary"
         data["username"] = student.username
+        data["word_count"] = student.dictionary.count()
         return data
 
 
@@ -89,10 +97,8 @@ class HomeworkUpdateView(LoginRequiredMixin,
     pk_url_kwarg = "homework_id"
 
     def get_success_url(self):
-        return reverse_lazy(
-            "students:student_card",
-            kwargs={"username": self.kwargs.get("username")}
-        )
+        return reverse_lazy("students:student_card",
+                            kwargs={"username": self.kwargs.get("username")})
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -109,10 +115,24 @@ class HomeworkDeleteView(LoginRequiredMixin,
     pk_url_kwarg = "homework_id"
 
     def get_success_url(self):
-        return reverse_lazy(
-            "students:student_card",
-            kwargs={"username": self.kwargs.get("username")}
-        )
+        return reverse_lazy("students:student_card",
+                            kwargs={"username": self.kwargs.get("username")})
+
+
+class ProgressListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
+    template_name = "students/progress.html"
+    context_object_name = "progress"
+
+    def get_queryset(self):
+        username = self.kwargs.get("username")
+        return Progress.objects.filter(student__username=username)
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        username = self.kwargs.get("username")
+        student = get_object_or_404(User, username=username)
+        data["student"] = student
+        return data
 
 
 @login_required
@@ -120,9 +140,8 @@ def student_card(request, username):
     if not (request.user.is_superuser or request.user.username == username):
         return redirect("about:index")
     template = "students/student_card.html"
-    student = get_object_or_404(
-        User.objects.prefetch_related("homework"), username=username
-    )
+    student = get_object_or_404(User.objects.prefetch_related("homework"),
+                                username=username)
     if request.method == "POST":
         id_list = request.POST.getlist("boxes")
         Homework.objects.all().update(done=False)
@@ -134,3 +153,13 @@ def student_card(request, username):
         "student": student,
     }
     return render(request, template, context)
+
+
+@login_required
+def download_dictionary(request, username):
+    response = HttpResponse(headers={
+        "Content-Type": "application/vnd.ms-excel",
+        "Content-Disposition": f"attachment; filename={username}'s_dict.xls",
+    })
+    create_dictionary_xls(username).save(response)
+    return response

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} {% if form.instance.pk %}Edit word{% else %}Add word{% endif %} {% endblock %}
+{% block title %} {% if form.instance.pk %}Edit word{% else %}Add word to dictionary{% endif %} {% endblock %}
 {% block content %}
 <h2 style="text-align: center">{% if form.instance.pk %}Edit word{% else %}Add new word{% endif %}</h2>
 <hr>

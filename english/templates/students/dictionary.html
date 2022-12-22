@@ -8,10 +8,12 @@
     <div class="col">
       <a href="{% url 'students:student_card' username %}" class="card-link">< My card</a>
     </div>
-    <div class="col text-center">
+    <div class="card-body text-center">
       <a href="{% url 'students:add_word' username %}" class="btn btn-secondary">Add word</a>
+      <a href="{% url 'students:download_dictionary' username %}" class="btn btn-secondary">Download Dictionary</a>
     </div>
-    <div class="col">
+    <div class="col text-center" style="padding-top: 12px;">
+      Total words: {{ word_count }}
     </div>
   </div>
 </div>

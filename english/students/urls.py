@@ -22,4 +22,10 @@ urlpatterns = [
     path("<str:username>/dictionary/add_word/",
          views.DictionaryCreateView.as_view(),
          name="add_word"),
+    path("<str:username>/progress/",
+         views.ProgressListView.as_view(),
+         name="progress"),
+    path("<str:username>/dictionary/download",
+         views.download_dictionary,
+         name="download_dictionary")
 ]

@@ -10,6 +10,7 @@
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
     {% if request.user.is_superuser %}<a href="{% url 'students:add_homework' student.username %}" class="card-link">Add homework</a>{% endif %}
     <a href="{% url 'students:dictionary' student.username %}" class="card-link">My dictionary</a>
+    <a href="{% url 'students:progress' student.username %}" class="card-link">My progress</a>
   </div>
 </div>
 {% if student.homework.all %}
@@ -32,7 +33,7 @@
       {% endif %}
     </div>
     <div class="card-body">
-      {{ homework.description }}
+      {{ homework.description|linebreaks }}
     </div>
     <div class="card-footer d-flex {% if homework.done %}text-bg-success{% endif %}">
       <div class="form-check">

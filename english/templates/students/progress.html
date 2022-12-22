@@ -6,37 +6,38 @@ Progress of {{ student }}
 <h2 style="text-align: center">Progress of {{ student }}</h2>
 <hr>
 <div class="container">
-    <div class="row">
-      <div class="col">
-        <a href="{% url 'students:student_card' student.username %}" class="card-link">< My card</a>
-      </div>
-      <div class="col text-center">
-      </div>
-      <div class="col">
-      </div>
+  <div class="row">
+    <div class="col">
+      <a href="{% url 'students:student_card' student.username %}" class="card-link">< My card</a>
+    </div>
+    <div class="col text-center">
+    </div>
+    <div class="col">
     </div>
   </div>
-  </br>
-  <table class="table">
-      <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Topic</th>
-            <th scope="done">Done</th>
-          </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        {% for topic in progress %}
-          <tr {% if topic.done %}class="table-success"{% endif %}>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ topic.topic }}</td>
-            <td>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" {% if topic.done %}checked{% endif %} {% if not request.user.is_superuser %}disabled{% endif %} value={{ topic.id }} name="boxes">
-              </div>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-  </table>
+</div>
+</br>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Topic</th>
+      <th scope="done">Done</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    {% for topic in progress %}
+      <tr {% if topic.done %}class="table-success"{% endif %}>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ topic.topic }}</td>
+        <td>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" {% if topic.done %}checked{% endif %} {% if not request.user.is_superuser %}disabled{% endif %} value={{ topic.id }} name="boxes">
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% include 'includes/paginator.html' %}
 {% endblock %}

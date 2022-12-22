@@ -124,3 +124,8 @@ AUTH_USER_MODEL = "users.User"
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = (BASE_DIR / "sent_emails",)
+
+
+HOMEWORK_PER_PAGE = 10
+PROGRESS_PER_PAGE = 30
+DICTIONARY_WORDS_PER_PAGE = 30

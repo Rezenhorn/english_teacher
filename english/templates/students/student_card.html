@@ -22,7 +22,7 @@
       <button class="btn btn-secondary" style="padding: 14px 14px;font-size:12px" type="submit">Update status of homeworks</button>
     </div>
   </div>
-  {% for homework in student.homework.all %}
+  {% for homework in page_obj %}
   <div class="card {% if homework.done %}border-success{% endif %}">
     <div class="card-header hstack gap-3">
       Homework for {{ homework.date|date:"d E Y" }}
@@ -43,5 +43,6 @@
   </div>
   <hr>
   {% endfor %}
+{% include 'includes/paginator.html' %}
 {% endif %}
 {% endblock %}

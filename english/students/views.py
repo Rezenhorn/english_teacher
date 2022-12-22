@@ -1,7 +1,9 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -29,6 +31,7 @@ class StudentListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
 class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
     template_name = "students/dictionary.html"
     context_object_name = "dictionary"
+    paginate_by = settings.DICTIONARY_WORDS_PER_PAGE
 
     def get_queryset(self):
         username = self.kwargs.get("username")
@@ -122,6 +125,7 @@ class HomeworkDeleteView(LoginRequiredMixin,
 class ProgressListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
     template_name = "students/progress.html"
     context_object_name = "progress"
+    paginate_by = settings.PROGRESS_PER_PAGE
 
     def get_queryset(self):
         username = self.kwargs.get("username")
@@ -135,13 +139,19 @@ class ProgressListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
         return data
 
 
+def paginator(page_number, posts):
+    """Paginator for function based views."""
+    paginator = Paginator(posts, settings.HOMEWORK_PER_PAGE)
+    return paginator.get_page(page_number)
+
+
 @login_required
 def student_card(request, username):
     if not (request.user.is_superuser or request.user.username == username):
         return redirect("about:index")
     template = "students/student_card.html"
-    student = get_object_or_404(User.objects.prefetch_related("homework"),
-                                username=username)
+    student = get_object_or_404(User, username=username)
+    homework = student.homework.all()
     if request.method == "POST":
         id_list = request.POST.getlist("boxes")
         Homework.objects.all().update(done=False)
@@ -150,6 +160,7 @@ def student_card(request, username):
         messages.success(request, "Homeworks status has been updated")
         return redirect("students:student_card", username)
     context = {
+        "page_obj": paginator(request.GET.get("page"), homework),
         "student": student,
     }
     return render(request, template, context)

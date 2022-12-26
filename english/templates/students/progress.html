@@ -5,16 +5,8 @@ Progress of {{ student }}
 {% block content %}
 <h2 style="text-align: center">Progress of {{ student }}</h2>
 <hr>
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <a href="{% url 'students:student_card' student.username %}" class="card-link">< My card</a>
-    </div>
-    <div class="col text-center">
-    </div>
-    <div class="col">
-    </div>
-  </div>
+<div class="row">
+  <a href="{% url 'students:student_card' student.username %}" class="card-link">< My card</a>
 </div>
 </br>
 <table class="table">

@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -35,7 +36,13 @@ class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
 
     def get_queryset(self):
         username = self.kwargs.get("username")
-        return Dictionary.objects.filter(student__username=username)
+        query = self.request.GET.get("q")
+        queryset = Dictionary.objects.filter(student__username=username)
+        if query:
+            return queryset.filter(
+                Q(word__icontains=query) | Q(translation__icontains=query)
+            )
+        return queryset
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -168,6 +175,7 @@ def student_card(request, username):
 
 @login_required
 def download_dictionary(request, username):
+    """Provides download of the student's dictionary as .xls file."""
     response = HttpResponse(headers={
         "Content-Type": "application/vnd.ms-excel",
         "Content-Disposition": f"attachment; filename={username}'s_dict.xls",

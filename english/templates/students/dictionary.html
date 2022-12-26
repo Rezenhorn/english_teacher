@@ -8,11 +8,23 @@
     <div class="col">
       <a href="{% url 'students:student_card' username %}" class="card-link">< My card</a>
     </div>
-    <div class="card-body text-center">
-      <a href="{% url 'students:add_word' username %}" class="btn btn-secondary">Add word</a>
-      <a href="{% url 'students:download_dictionary' username %}" class="btn btn-secondary">Download Dictionary</a>
+    <div class="vstack gap-3 col-md-1 mx-auto">
+      <a href="{% url 'students:add_word' username %}" class="btn btn-secondary" style="padding: 14px 14px;font-size:12px">Add word</a>
+      <a href="{% url 'students:download_dictionary' username %}" class="btn border-btn" style="padding: 14px 14px;font-size:12px">Download Dictionary</a>
+      <form class="row g-3 text-center" method="get">
+        <div class="col-auto">
+          Find word
+        </div>
+        <div class="col-auto">
+          <label class="visually-hidden">Word</label>
+          <input class="form-control" name="q" type="text" placeholder="Search...">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-3" style="padding: 14px 14px;font-size:12px">Search</button>
+        </div>
+      </form>
     </div>
-    <div class="col text-center" style="padding-top: 12px;">
+    <div class="col text-center">
       Total words: {{ word_count }}
     </div>
   </div>

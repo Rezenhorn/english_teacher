@@ -1,4 +1,5 @@
 from django.contrib.auth.models import UserManager
+from django.db.models import Manager
 
 
 class CustomUserManager(UserManager):
@@ -19,3 +20,10 @@ class CustomUserManager(UserManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(username, email, password, **extra_fields)
+
+
+class StudentsManager(Manager):
+    """Returns only users without admin rights (i.e. students)."""
+    def get_queryset(self):
+        return super().get_queryset().filter(is_superuser=False,
+                                             is_staff=False)

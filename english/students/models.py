@@ -61,8 +61,6 @@ class Progress(models.Model):
     topic = models.CharField(max_length=100)
     student = models.ForeignKey(User,
                                 verbose_name="Student",
-                                blank=True,
-                                null=True,
                                 on_delete=models.CASCADE,
                                 related_name="progress")
     done = models.BooleanField(verbose_name="Done", default=False)

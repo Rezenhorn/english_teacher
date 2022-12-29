@@ -23,10 +23,8 @@ class StudentListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
     context_object_name = "student_list"
 
     def get_queryset(self):
-        return {"active": User.objects.filter(is_active=True,
-                                              is_superuser=False),
-                "inactive": User.objects.filter(is_active=False,
-                                                is_superuser=False)}
+        return {"active": User.students.filter(is_active=True),
+                "inactive": User.students.filter(is_active=False)}
 
 
 class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
@@ -46,7 +44,7 @@ class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        student = User.objects.get(username=self.kwargs.get("username"))
+        student = get_object_or_404(User, username=self.kwargs.get("username"))
         data["title"] = f"{student.first_name}'s dictionary"
         data["username"] = student.username
         data["word_count"] = student.dictionary.count()

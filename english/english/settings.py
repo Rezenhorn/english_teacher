@@ -3,13 +3,13 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv("./infra/.env")
+load_dotenv("../infra/.env")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", "default-key")
 
-DEBUG = bool(os.getenv("DEBUG", "False"))
+DEBUG = os.getenv("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split()
 
@@ -119,3 +119,5 @@ EMAIL_FILE_PATH = (BASE_DIR / "sent_emails",)
 HOMEWORK_PER_PAGE = 10
 PROGRESS_PER_PAGE = 30
 DICTIONARY_WORDS_PER_PAGE = 30
+
+CSRF_FAILURE_VIEW = "core.views.csrf_failure"

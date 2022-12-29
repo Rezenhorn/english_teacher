@@ -7,7 +7,7 @@ A website for an English tutor that has the function of a business card and also
 - user registration
 - handing out homework to students
 - tracking learning progress
-- creation of a personal dictionary with the translation of words, the ability to upload a dictionary in excel format, etc.
+- creating of a personal dictionary with the translation of words, the ability to download a dictionary in the excel format, etc.
 
 ## How to start the project:
 

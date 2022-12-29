@@ -265,51 +265,7 @@ label {
     border-color: #FCAF17; }
 
 /*=============================
-    - scrollUp
-=============================*/
-.scroll-top {
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
-  position: fixed;
-  bottom: 105%;
-  right: 30px;
-  font-size: 16px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  z-index: 99;
-  color: #fff;
-  text-align: center;
-  cursor: pointer;
-  background: #0054FF;
-  transition: 1s ease;
-  border: none;
-  opacity: 0; }
-  @media (max-width: 767.98px) {
-    .scroll-top {
-      right: 15px; } }
-
-.scroll-top.open {
-  bottom: 30px;
-  opacity: 1; }
-
-.scroll-top::after {
-  position: absolute;
-  z-index: -1;
-  content: '';
-  top: 100%;
-  left: 5%;
-  height: 10px;
-  width: 90%;
-  opacity: 1;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 80%); }
-
-.scroll-top:hover {
-  background: #FCAF17; }
-
-/*=============================
-04. About
+About
 =============================*/
 .section__title .sub-title {
   display: block;

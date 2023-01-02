@@ -46,7 +46,7 @@ class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
         data = super().get_context_data(**kwargs)
         student = get_object_or_404(User, username=self.kwargs.get("username"))
         data["title"] = f"{student.first_name}'s dictionary"
-        data["username"] = student.username
+        data["student"] = student
         data["word_count"] = student.dictionary.count()
         return data
 

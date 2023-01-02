@@ -16,7 +16,7 @@ List of students
       <div class="accordion-body">
         <ul class="list-group list-group-flush">
             {% for student in student_list.active %}
-              <a href="{% url 'students:student_card' student.username %}" class="list-group-item">
+              <a href="{{ student.get_absolute_url }}" class="list-group-item">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">{{ student }}</h5>
                   <small>{{ student.age }} years old</small>
@@ -38,7 +38,7 @@ List of students
       <div class="accordion-body">
         <ul class="list-group list-group-flush">
           {% for student in student_list.inactive %}
-            <a href="{% url 'students:student_card' student.username %}" class="list-group-item">
+            <a href="{{ student.get_absolute_url }}" class="list-group-item">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{ student }}</h5>
                 <small>{{ student.age }} years old</small>

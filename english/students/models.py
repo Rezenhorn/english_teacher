@@ -13,8 +13,6 @@ class Homework(models.Model):
     student = models.ForeignKey(
         User,
         verbose_name="Student",
-        blank=True,
-        null=True,
         on_delete=models.CASCADE,
         related_name="homework"
     )

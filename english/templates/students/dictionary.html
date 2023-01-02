@@ -6,11 +6,11 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <a href="{% url 'students:student_card' username %}" class="card-link">< My card</a>
+      <a href="{{ student.get_absolute_url }}" class="card-link">< My card</a>
     </div>
     <div class="vstack gap-3 col-md-1 mx-auto">
-      <a href="{% url 'students:add_word' username %}" class="btn btn-secondary" style="padding: 14px 14px;font-size:12px">Add word</a>
-      <a href="{% url 'students:download_dictionary' username %}" class="btn border-btn" style="padding: 14px 14px;font-size:12px">Download Dictionary</a>
+      <a href="{% url 'students:add_word' student.username %}" class="btn btn-secondary" style="padding: 14px 14px;font-size:12px">Add word</a>
+      <a href="{% url 'students:download_dictionary' student.username %}" class="btn border-btn" style="padding: 14px 14px;font-size:12px">Download Dictionary</a>
       <form class="row g-3 text-center" method="get">
         <div class="col-auto">
           Find word

@@ -6,7 +6,7 @@ Progress of {{ student }}
 <h2 style="text-align: center">Progress of {{ student }}</h2>
 <hr>
 <div class="row">
-  <a href="{% url 'students:student_card' student.username %}" class="card-link">< My card</a>
+  <a href="{{ student.get_absolute_url }}" class="card-link">< My card</a>
 </div>
 </br>
 <table class="table">

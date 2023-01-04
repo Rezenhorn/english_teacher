@@ -4,10 +4,10 @@
 ## Description:
 
 A website for an English tutor that has the function of a business card and also:
-- user registration
-- handing out homework to students
-- tracking learning progress
-- creating of a personal dictionary with the translation of words, the ability to download a dictionary in the excel format, etc.
+- User registration
+- Handing out homework to students
+- Tracking learning progress
+- Creating of a personal dictionary with the translation of words, the ability to download a dictionary in the excel format, etc.
 
 ## How to start the project:
 
@@ -15,7 +15,7 @@ A website for an English tutor that has the function of a business card and also
 ```
 git clone https://github.com/Rezenhorn/english_teacher.git
 ```
-### Create file .env in directory infra/ and fill it in according to the example (file .env.example):
+### Create file .env in directory infra/ and fill it in according to the example (file .env.example).
 ### Make sure, that Docker is installed on your system and launched. From directory infra/ start Docker:
 ```
 docker-compose up -d --build

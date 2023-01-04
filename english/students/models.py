@@ -22,7 +22,7 @@ class Homework(models.Model):
         ordering = ("-date",)
 
     def __str__(self):
-        return self.description[:40]
+        return f"For {self.student}: {self.description[:40]}"
 
 
 class Dictionary(models.Model):
@@ -67,4 +67,4 @@ class Progress(models.Model):
         ordering = ("id",)
 
     def __str__(self):
-        return self.topic
+        return f"{self.topic}: {self.student}"

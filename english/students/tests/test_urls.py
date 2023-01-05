@@ -53,7 +53,7 @@ class StudentsURLTests(TestCase):
                 "students:add_homework",
                 kwargs={"username": self.student.username})),
             ((f"/students/{self.student.username}/"
-             f"edit_homework/{self.homework.pk}/"),
+              f"edit_homework/{self.homework.pk}/"),
              reverse("students:edit_homework",
                      kwargs={"username": self.student.username,
                              "homework_id": self.homework.pk})),
@@ -68,6 +68,11 @@ class StudentsURLTests(TestCase):
             (f"/students/{self.student.username}/dictionary/add_word/",
              reverse("students:add_word",
                      kwargs={"username": self.student.username})),
+            (f"/students/{self.student.username}/dictionary/"
+             f"edit_word/{self.dictionary.pk}/",
+             reverse("students:edit_word",
+                     kwargs={"username": self.student.username,
+                             "dictionary_id": self.dictionary.pk})),
             (f"/students/{self.student.username}/progress/",
              reverse("students:progress",
                      kwargs={"username": self.student.username})),
@@ -104,6 +109,11 @@ class StudentsURLTests(TestCase):
                 False),
             (reverse("students:add_word",
                      kwargs={"username": self.student.username}),
+                HTTPStatus.OK,
+                False),
+            (reverse("students:edit_word",
+                     kwargs={"username": self.student.username,
+                             "dictionary_id": self.dictionary.pk}),
                 HTTPStatus.OK,
                 False),
             (reverse("students:progress",
@@ -192,6 +202,10 @@ class StudentsURLTests(TestCase):
                     ): "students/dictionary.html",
             reverse("students:add_word",
                     kwargs={"username": self.student.username}
+                    ): "students/dictionary_form.html",
+            reverse("students:edit_word",
+                    kwargs={"username": self.student.username,
+                            "dictionary_id": self.dictionary.pk}
                     ): "students/dictionary_form.html",
             reverse("students:progress",
                     kwargs={"username": self.student.username}

@@ -34,8 +34,6 @@ class Dictionary(models.Model):
                                null=True)
     student = models.ForeignKey(User,
                                 verbose_name="Student",
-                                blank=True,
-                                null=True,
                                 on_delete=models.CASCADE,
                                 related_name="dictionary")
 
@@ -45,7 +43,7 @@ class Dictionary(models.Model):
 
     def save(self, *args, **kwargs):
         """Capitalizes first letters in selected fields."""
-        for field_name in ["word", "translation", "example"]:
+        for field_name in ["word", "translation"]:
             value = getattr(self, field_name, False)
             if value:
                 setattr(self, field_name, value.capitalize())

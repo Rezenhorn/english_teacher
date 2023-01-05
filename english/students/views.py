@@ -68,9 +68,21 @@ class DictionaryCreateView(LoginRequiredMixin,
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         username = self.kwargs.get("username")
-        data["title"] = "Add new word"
         data["username"] = username
         return data
+
+
+class DictionaryUpdateView(LoginRequiredMixin,
+                           SuperuserOrAuthorMixin,
+                           UpdateView):
+    form_class = DictionaryForm
+    model = Dictionary
+    template_name = "students/dictionary_form.html"
+    pk_url_kwarg = "dictionary_id"
+
+    def get_success_url(self):
+        return reverse_lazy("students:dictionary",
+                            kwargs={"username": self.kwargs.get("username")})
 
 
 class HomeworkCreateView(LoginRequiredMixin,

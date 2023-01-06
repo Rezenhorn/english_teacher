@@ -32,24 +32,24 @@
 </br>
 <div class="table-responsive">
   <table class="table table-striped align-middle">
-      <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Word</th>
-            <th scope="col">Translation</th>
-            <th scope="col">Example</th>
-          </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        {% for word in dictionary %}
+    <thead>
         <tr>
-            <td><a href="{% url 'students:edit_word' student.username word.pk %}">{{ forloop.counter }}</a></td>
-            <td>{{ word.word }}</td>
-            <td>{{ word.translation }}</td>
-            <td>{% if word.example %}{{ word.example }}{% else %} - {% endif %}</td>
+          <th scope="col">#</th>
+          <th scope="col">Word</th>
+          <th scope="col">Translation</th>
+          <th scope="col">Example</th>
         </tr>
-        {% endfor %}
-      </tbody>
+    </thead>
+    <tbody class="table-group-divider">
+      {% for word in dictionary %}
+      <tr>
+          <td><a href="{% url 'students:edit_word' student.username word.pk %}">{{ forloop.counter }}</a></td>
+          <td>{{ word.word }}</td>
+          <td>{{ word.translation }}</td>
+          <td>{% if word.example %}{{ word.example }}{% else %} - {% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
   </table>
 </div>
 {% include 'includes/paginator.html' %}

@@ -43,7 +43,7 @@ class StudentsURLTests(TestCase):
         self.superuser_client.force_login(self.superuser)
 
     def test_reverse_names_equal_urls(self):
-        """Test of url and reverse_names match."""
+        """Test of URL and reverse_names match."""
         names = [
             ("/students/", reverse("students:list")),
             (f"/students/{self.student.username}/", reverse(

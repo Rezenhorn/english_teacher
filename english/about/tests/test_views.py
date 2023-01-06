@@ -6,7 +6,7 @@ class AboutViewsTests(TestCase):
     def setUp(self):
         self.guest_client = Client()
 
-    def test_about_uses_correct_template(self):
+    def test_about_url_uses_correct_template(self):
         """URL-address uses correct template."""
         templates_pages_names = {
             reverse("about:about"): "about/about_me.html",

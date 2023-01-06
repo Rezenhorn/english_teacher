@@ -42,7 +42,7 @@ class StudentsURLTests(TestCase):
         self.authorized_client.force_login(self.student)
         self.superuser_client.force_login(self.superuser)
 
-    def test_reverse_names_equal_urls(self):
+    def test_students_reverse_names_equal_urls(self):
         """Test of URL and reverse_names match."""
         names = [
             ("/students/", reverse("students:list")),
@@ -81,7 +81,7 @@ class StudentsURLTests(TestCase):
             with self.subTest(url=url):
                 self.assertEqual(url, reverse_name)
 
-    def test_url_exists_at_desired_location(self):
+    def test_students_url_exists_at_desired_location(self):
         """Test of pages accessibility for guest and authorized user."""
         reverse_names = [
             (reverse("students:list"), HTTPStatus.OK, True),
@@ -145,17 +145,26 @@ class StudentsURLTests(TestCase):
                 response = self.authorized_client.get(url, follow=True)
                 self.assertRedirects(response, reverse("about:index"))
 
-    def test_add_word_redirect_for_non_author(self):
-        """Test of unavailability of adding a word to
-        another student's dictionary.
-        """
+    def test_redirect_for_non_author(self):
+        """Student's pages redirect another student to index page."""
         self.authorized_client.force_login(self.student_non_author)
-        response = self.authorized_client.get(
+        reverse_names = (
             reverse("students:add_word",
                     kwargs={"username": self.student.username}),
-            follow=True
+            reverse("students:student_card",
+                    kwargs={"username": self.student.username}),
+            reverse("students:download_dictionary",
+                    kwargs={"username": self.student.username}),
+            reverse("students:progress",
+                    kwargs={"username": self.student.username}),
+            reverse("students:edit_word",
+                    kwargs={"username": self.student.username,
+                            "dictionary_id": self.dictionary.pk})
         )
-        self.assertRedirects(response, reverse("about:index"))
+        for url in reverse_names:
+            with self.subTest(url=url):
+                response = self.authorized_client.get(url, follow=True)
+                self.assertRedirects(response, reverse("about:index"))
 
     def test_student_url_redirect_anonymous_on_login(self):
         """Pages /student/, /dictionary/, /progress/
@@ -183,7 +192,7 @@ class StudentsURLTests(TestCase):
                 response = self.guest_client.get(url, follow=True)
                 self.assertRedirects(response, redirect)
 
-    def test_pages_uses_correct_template(self):
+    def test_students_pages_use_correct_template(self):
         """URL-address uses correct template."""
         templates_pages_names = {
             reverse("students:list"): "students/list.html",

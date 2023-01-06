@@ -10,7 +10,7 @@ User = get_user_model()
 
 
 class StudentsFormTests(TestCase):
-    """Model tests of application Students."""
+    """Forms tests of application Students."""
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

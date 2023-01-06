@@ -8,7 +8,7 @@ class AboutURLTests(TestCase):
     def setUp(self):
         self.guest_client = Client()
 
-    def test_reverse_names_equal_urls(self):
+    def test_about_reverse_names_equal_urls(self):
         """Test of URL and reverse_names match."""
         names = [
             ("/", reverse("about:index")),

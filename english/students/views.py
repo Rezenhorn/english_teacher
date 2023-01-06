@@ -13,7 +13,7 @@ from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from .forms import DictionaryForm, HomeworkForm
 from .mixins import SuperuserOrAuthorMixin, SuperuserRequiredMixin
 from .models import Dictionary, Homework, Progress
-from .utils import create_dictionary_xls
+from .utils import author_or_superuser_required, create_dictionary_xls
 
 User = get_user_model()
 
@@ -163,9 +163,8 @@ def paginator(page_number, posts):
 
 
 @login_required
+@author_or_superuser_required
 def student_card(request, username):
-    if not (request.user.is_superuser or request.user.username == username):
-        return redirect("about:index")
     template = "students/student_card.html"
     student = get_object_or_404(User, username=username)
     homework = student.homework.all()
@@ -184,6 +183,7 @@ def student_card(request, username):
 
 
 @login_required
+@author_or_superuser_required
 def download_dictionary(request, username):
     """Provides download of the student's dictionary as .xls file."""
     response = HttpResponse(headers={

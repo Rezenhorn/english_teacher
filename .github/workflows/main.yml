@@ -55,8 +55,6 @@ jobs:
             key: ${{ secrets.SSH_KEY }}
             passphrase: ${{ secrets.PASSPHRASE }}
             script: |
-              mkdir -p english/
-              cd english/
               sudo docker-compose stop
               sudo docker-compose rm web
               touch .env

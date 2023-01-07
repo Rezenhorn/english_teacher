@@ -3,7 +3,7 @@ name: Django-app workflow
 on: [push]
 
 jobs:
-  fleke8_tests:
+  flake8_tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -69,5 +69,5 @@ jobs:
               echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
               sudo docker pull ${{ secrets.DOCKER_USERNAME }}/english:latest
               sudo docker-compose up -d
-              sudo docker-compose exec web python manage.py migrate
-              sudo docker-compose exec web python manage.py collectstatic --no-input
+              sudo docker-compose exec -T web python manage.py migrate
+              sudo docker-compose exec -T web python manage.py collectstatic --no-input

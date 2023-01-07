@@ -67,7 +67,6 @@ jobs:
               echo DEBUG=${{ secrets.DEBUG }} >> .env
               echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
               echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-              cd ..
               sudo docker pull ${{ secrets.DOCKER_USERNAME }}/english:latest
               sudo docker-compose up -d
               sudo docker-compose exec web python manage.py migrate

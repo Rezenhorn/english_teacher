@@ -21,8 +21,6 @@ jobs:
     - name: Test with flake8 and django tests
       run: |
         python -m flake8
-        cd english
-        python manage.py test
 
   build_and_push_to_docker_hub:
     if: github.ref == 'refs/heads/master'

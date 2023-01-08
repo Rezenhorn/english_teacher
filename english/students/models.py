@@ -62,6 +62,7 @@ class Progress(models.Model):
     done = models.BooleanField(verbose_name="Done", default=False)
 
     class Meta:
+        verbose_name_plural = "Progress"
         ordering = ("id",)
 
     def __str__(self):

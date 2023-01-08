@@ -29,11 +29,11 @@ jobs:
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
         pip install -r english/requirements.txt
     - name: Run migrations
-      run: python manage.py migrate
+      run: python english/manage.py migrate
     - name: Test with flake8 and python unittest
       run: |
         python -m flake8
-        python manage.py test
+        python english/manage.py test
 
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub

@@ -30,10 +30,12 @@ jobs:
         pip install -r english/requirements.txt
     - name: Run migrations
       run: python english/manage.py migrate
-    - name: Test with flake8 and python unittest
-      run: |
-        python -m flake8
-        python english/manage.py test
+    - name: Test with flake8
+      run: python -m flake8
+    - name: Run python unittest
+      run:
+        cd english/
+        python manage.py test
 
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub

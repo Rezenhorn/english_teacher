@@ -5,7 +5,7 @@
 {% block content %}
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">{{ student }}</h5>
+    <h5 class="card-title">{{ student }} {% if not student.is_active %} (inactive) {% endif %}</h5>
     <h6 class="card-subtitle mb-2 text-muted">{{ student.age }} years old</h6>
     <p class="card-text">Aim of education: {{ student.aim }}</p>
     {% if request.user.is_superuser %}<a href="{% url 'students:add_homework' student.username %}" class="card-link">Add homework</a>{% endif %}

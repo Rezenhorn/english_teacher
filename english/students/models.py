@@ -43,7 +43,7 @@ class Dictionary(models.Model):
 
     def save(self, *args, **kwargs):
         """Capitalizes first letters in selected fields."""
-        for field_name in ["word", "translation"]:
+        for field_name in ("word", "translation"):
             value = getattr(self, field_name, False)
             if value:
                 setattr(self, field_name, value.capitalize())

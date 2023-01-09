@@ -31,7 +31,7 @@ def create_dictionary_xls(username: str) -> xlwt.Workbook:
 
 
 def author_or_superuser_required(func):
-    """Decorator that checks that the user is an owner of the page
+    """Decorator that checks if the user is an owner of the page
     or superuser.
     """
     @wraps(func)

@@ -7,7 +7,7 @@ from django.contrib.auth.views import (LoginView, LogoutView,
                                        PasswordResetView)
 from django.urls import path
 
-from .views import SignUp
+from .views import SignUp, UserEditView
 
 app_name = "users"
 
@@ -64,5 +64,12 @@ urlpatterns = [
             template_name="users/password_reset_complete.html"
         ),
         name="password_reset_complete"
+    ),
+    path(
+        "<int:user_id>/edit_profile/",
+        UserEditView.as_view(
+            template_name="users/edit_profile.html"
+        ),
+        name="edit_profile"
     ),
 ]

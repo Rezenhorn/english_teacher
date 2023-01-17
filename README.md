@@ -16,6 +16,7 @@ A website for an English tutor that has the function of a business card and also
 - Testing with Django unit tests
 - Bootstrap 5
 - Docker, docker-compose, nginx and gunicorn
+- CI/CD using GitHub Actions
 
 ## :computer: How to run the project on your computer:
 

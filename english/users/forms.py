@@ -1,4 +1,5 @@
-from django import forms
+from bootstrap_datepicker_plus.widgets import DatePickerInput
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
@@ -14,7 +15,9 @@ class CreationForm(UserCreationForm):
             "first_name", "last_name", "username", "email", "birth_date", "aim"
         )
         widgets = {
-            "birth_date": forms.SelectDateWidget(years=range(1950, 2014))
+            "birth_date": DatePickerInput(
+                options={"format": settings.DATE_INPUT_FORMATS}
+            )
         }
 
 
@@ -27,5 +30,7 @@ class UserEditForm(UserChangeForm):
             "first_name", "last_name", "username", "email", "birth_date", "aim"
         )
         widgets = {
-            "birth_date": forms.SelectDateWidget(years=range(1950, 2014))
+            "birth_date": DatePickerInput(
+                options={"format": settings.DATE_INPUT_FORMATS}
+            )
         }

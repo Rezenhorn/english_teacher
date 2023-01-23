@@ -21,9 +21,10 @@
               </div>
             {% endfor %}
           {% endif %}
+          {{ form.media }}
           <form method="post" action="{% url 'users:signup' %}">
             {% csrf_token %}
-            <div class="row">
+            <div class="row mb-3">
               <div class="col">
                 <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}
                   {% if form.first_name.field.required %}
@@ -47,6 +48,7 @@
                   {% endif %}
                 </label>
                 {{ form.birth_date|addclass:"form-control" }}
+                <small id="{{ form.birth_date.id_for_label }}-help" class="form-text text-muted">{{ form.birth_date.help_text|safe }}</small>
               </div>
             </div>
             <div class="mb-3">

@@ -4,15 +4,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="{% static 'img/logo.png' %}" width="35" height="35" type="image">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static "img/fav/apple-touch-icon.png" %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/logo.png' %}" width="32" height="32">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/logo.png' %}" width="16" height="16">
+    <link rel="icon" href="{% static 'english/img/logo.png' %}" width="35" height="35" type="image">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static "english/img/fav/apple-touch-icon.png" %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'english/img/logo.png' %}" width="32" height="32">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'english/img/logo.png' %}" width="16" height="16">
     <meta name="msapplication-TileColor" content="#000">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'english/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'english/css/style.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {% load django_bootstrap5 %}
     <title>
       {% block title %}
         Title

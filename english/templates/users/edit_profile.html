@@ -21,9 +21,10 @@
               </div>
             {% endfor %}
           {% endif %}
+          {{ form.media }}
           <form method="post" action="{% url 'users:edit_profile' request.user.pk %}">
             {% csrf_token %}
-            <div class="row">
+            <div class="row mb-3">
               <div class="col">
                 <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}
                     {% if form.first_name.field.required %}

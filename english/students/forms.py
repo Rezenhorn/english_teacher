@@ -1,6 +1,8 @@
 import datetime
 
+from bootstrap_datepicker_plus.widgets import DatePickerInput
 from django import forms
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.forms import ValidationError
 from django.utils import timezone
@@ -28,7 +30,9 @@ class HomeworkForm(forms.ModelForm):
                 "placeholder": "Enter the homework text",
                 "rows": 3,
             }),
-            "date": forms.SelectDateWidget(years=range(year_now, year_now + 2))
+            "date": DatePickerInput(
+                options={"format": settings.DATE_INPUT_FORMATS}
+            )
         }
 
 

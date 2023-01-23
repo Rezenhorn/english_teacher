@@ -27,9 +27,9 @@ class Homework(models.Model):
 
 class Dictionary(models.Model):
     word = models.CharField(max_length=50)
-    translation = models.CharField(max_length=50)
+    translation = models.CharField(max_length=150)
     example = models.CharField(help_text="A sentence with the word",
-                               max_length=100,
+                               max_length=150,
                                blank=True,
                                null=True)
     student = models.ForeignKey(User,

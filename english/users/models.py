@@ -11,7 +11,7 @@ class User(AbstractUser):
     """Custom user model with student's features."""
     first_name = models.CharField("First name", max_length=150)
     last_name = models.CharField("Last name", max_length=150)
-    birth_date = models.DateField("Date of birth")
+    birth_date = models.DateField("Date of birth", help_text="dd.mm.yyyy")
     aim = models.CharField(
         verbose_name="Training objective",
         help_text="Your aim of English learning",

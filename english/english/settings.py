@@ -15,16 +15,18 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split()
 
 
 INSTALLED_APPS = [
-    "about.apps.AboutConfig",
-    "core.apps.CoreConfig",
-    "students.apps.StudentsConfig",
-    "users.apps.UsersConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "about.apps.AboutConfig",
+    "core.apps.CoreConfig",
+    "students.apps.StudentsConfig",
+    "users.apps.UsersConfig",
+    "django_bootstrap5",
+    "bootstrap_datepicker_plus"
 ]
 
 MIDDLEWARE = [
@@ -139,3 +141,5 @@ PROGRESS_PER_PAGE = 30
 DICTIONARY_WORDS_PER_PAGE = 30
 
 CSRF_FAILURE_VIEW = "core.views.csrf_failure"
+
+DATE_INPUT_FORMATS = "DD.MM.YYYY"

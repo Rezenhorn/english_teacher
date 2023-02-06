@@ -580,6 +580,7 @@ About
       .about__skill__item {
         width: 100%; } }
     .about__skill__item .title {
+      width: 70%;
       font-family: "Roboto", sans-serif;
       color: #68666C;
       text-transform: uppercase;

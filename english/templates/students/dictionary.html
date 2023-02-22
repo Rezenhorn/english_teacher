@@ -6,7 +6,7 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <a href="{{ student.get_absolute_url }}" class="card-link">< My card</a>
+      <a href="{{ student.get_absolute_url }}" class="card-link">&lt; My card</a>
     </div>
     <div class="vstack gap-3 col-md-1 mx-auto">
       <a href="{% url 'students:add_word' student.username %}" class="btn btn-secondary" style="padding: 14px 14px;font-size:12px">Add word</a>
@@ -29,7 +29,7 @@
     </div>
   </div>
 </div>
-</br>
+<br>
 <div class="table-responsive">
   <table class="table table-striped align-middle">
     <thead>

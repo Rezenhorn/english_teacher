@@ -170,9 +170,9 @@ def student_card(request, username):
     homework = student.homework.all()
     if request.method == "POST":
         id_list = request.POST.getlist("boxes")
-        Homework.objects.all().update(done=False)
+        homework.update(done=False)
         for id in id_list:
-            Homework.objects.filter(pk=int(id)).update(done=True)
+            homework.filter(pk=int(id)).update(done=True)
         messages.success(request, "Homeworks status has been updated")
         return redirect("students:student_card", username)
     context = {

@@ -36,6 +36,10 @@ class Dictionary(models.Model):
                                 verbose_name="Student",
                                 on_delete=models.CASCADE,
                                 related_name="dictionary")
+    date = models.DateField("Addition date",
+                            auto_now_add=True,
+                            blank=True,
+                            null=True)
 
     class Meta:
         ordering = ("word",)
@@ -45,7 +49,7 @@ class Dictionary(models.Model):
         """Capitalizes first letters in selected fields."""
         for field_name in ("word", "translation"):
             value = getattr(self, field_name, False)
-            if value:
+            if value and not value.isupper():
                 setattr(self, field_name, value.capitalize())
         super(Dictionary, self).save(*args, **kwargs)
 

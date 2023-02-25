@@ -9,18 +9,26 @@
       <a href="{{ student.get_absolute_url }}" class="card-link">&lt; My card</a>
     </div>
     <div class="vstack gap-3 col-md-1 mx-auto">
-      <a href="{% url 'students:add_word' student.username %}" class="btn btn-secondary" style="padding: 14px 14px;font-size:12px">Add word</a>
-      <a href="{% url 'students:download_dictionary' student.username %}" class="btn border-btn" style="padding: 14px 14px;font-size:12px">Download Dictionary</a>
+      <div class="d-inline-flex justify-content-between align-items-center">
+        <a href="{% url 'students:add_word' student.username %}" class="btn btn-secondary" style="font-size:12px">Add word</a>
+        <a href="{% url 'students:download_dictionary' student.username %}" class="btn border-btn" style="font-size:12px">Download Dictionary</a>
+      </div>
       <form class="row g-3 text-center" method="get">
-        <div class="col-auto">
-          Find word
-        </div>
-        <div class="col-auto">
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="align-self-center">Find word</span>
           <label class="visually-hidden">Word</label>
-          <input class="form-control" name="q" type="text" placeholder="Search...">
+          <input class="form-control w-50" name="q" type="text" placeholder="Search...">
+          <button type="submit" class="btn btn-primary h-50 w-25" style="font-size:12px">Search</button>
         </div>
-        <div class="col-auto">
-          <button type="submit" class="btn btn-primary mb-3" style="padding: 14px 14px;font-size:12px">Search</button>
+        <div class="d-flex justify-content-center pt-1">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="o" id="inlineRadio1" value="alphabet" {% if order != "date" %}checked{% endif %}>
+            <label class="form-check-label" for="inlineRadio1">Alphabet</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="o" id="inlineRadio2" value="date" {% if order == "date" %}checked{% endif %}>
+            <label class="form-check-label" for="inlineRadio2">Date</label>
+          </div>
         </div>
       </form>
     </div>

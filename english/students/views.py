@@ -35,7 +35,10 @@ class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
     def get_queryset(self):
         username = self.kwargs.get("username")
         query = self.request.GET.get("q")
+        order = self.request.GET.get("o")
         queryset = Dictionary.objects.filter(student__username=username)
+        if order == "date":
+            queryset = queryset.order_by("-date", "word")
         if query:
             return queryset.filter(
                 Q(word__icontains=query) | Q(translation__icontains=query)
@@ -48,6 +51,7 @@ class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
         data["title"] = f"{student.first_name}'s dictionary"
         data["student"] = student
         data["word_count"] = student.dictionary.count()
+        data["order"] = self.request.GET.get("o")
         return data
 
 

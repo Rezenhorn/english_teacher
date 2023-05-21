@@ -10,6 +10,7 @@ A website for an English tutor that has the function of a business card and also
 - Creating of a personal dictionary with the translation of words, the ability to download a dictionary in the excel format, etc.
 
 ## :hammer_and_wrench: Techs:
+
 - Python 3.7.9
 - Django 3.2.16
 - PostgreSQL
@@ -21,22 +22,31 @@ A website for an English tutor that has the function of a business card and also
 ## :computer: How to run the project on your computer:
 
 ### Clone the repository:
+
 ```
 git clone https://github.com/Rezenhorn/english_teacher.git
 ```
-### Create file .env in directory infra/ and fill it in according to the example (file .env.example).
-### Make sure, that Docker is installed on your system and launched. From directory infra/ start Docker:
+
+### Create file `.env` in directory `infra/` and fill it in according to the example (file `.env.example`).
+
+### Make sure, that Docker is installed on your system and launched. From directory `infra/` start Docker:
+
 ```
 docker-compose up -d --build
 ```
+
 ### Apply migrations, create superuser, collect static:
+
 ```
 docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py createsuperuser
 docker-compose exec web python manage.py collectstatic --no-input
 ```
+
 ### You will find the running website at URL http://localhost/
+
 ## If you want to stop running containers:
+
 ```
 docker-compose down -v
 ```

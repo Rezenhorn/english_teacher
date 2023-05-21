@@ -15,8 +15,10 @@ class SuperuserRequiredMixin(UserPassesTestMixin):
 
 
 class SuperuserOrAuthorMixin(UserPassesTestMixin):
-    """Access for superusers or authors.
-       If user is not authenticated, redirects to login page."""
+    """
+    Access for superusers or authors.
+    If user is not authenticated, redirects to login page.
+    """
     def test_func(self):
         return (self.request.user.is_superuser
                 or self.request.user.username == self.kwargs.get("username"))

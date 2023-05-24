@@ -21,7 +21,9 @@ def create_dictionary_xls(username: str) -> xlwt.Workbook:
 
     font_style = xlwt.XFStyle()
     user = get_object_or_404(User, username=username)
-    rows = user.dictionary.values_list("word", "translation", "example")
+    rows = user.dictionary.values_list(
+        "word", "transcription", "translation", "example"
+    )
 
     for row in rows:
         row_num += 1

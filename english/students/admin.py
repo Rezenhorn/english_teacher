@@ -12,7 +12,9 @@ class HomeworkAdmin(admin.ModelAdmin):
 
 @admin.register(Dictionary)
 class DictionaryAdmin(admin.ModelAdmin):
-    list_display = ("word", "translation", "example", "student", "date")
+    list_display = (
+        "word", "translation", "transcription", "example", "student", "date"
+    )
     list_filter = ("student",)
     search_fields = ("word", "translation", "student")
 

@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", "default-key")
 
-DEBUG = os.getenv("DEBUG", False) == "True"
+DEBUG = True  # os.getenv("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split()
 
@@ -58,7 +58,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "english.wsgi.application"
-
+"""
 DATABASES = {
     "default": {
         "ENGINE": os.getenv("DB_ENGINE", "django.db.backends.postgresql"),
@@ -88,7 +88,7 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-"""
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -116,12 +116,12 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
-"""
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 """
 STATIC_ROOT = BASE_DIR / "static"
+"""
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

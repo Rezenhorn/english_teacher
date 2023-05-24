@@ -44,6 +44,7 @@
       <tr>
         <th scope="col">Edit</th>
         <th scope="col">Word</th>
+        <th scope="col">Transcription</th>
         <th scope="col">Translation</th>
         <th scope="col">Example</th>
       </tr>
@@ -59,6 +60,7 @@
             </a>
         </td>
         <td>{{ word.word }}</td>
+        <td>{{ word.transcription }}</td>
         <td>{{ word.translation }}</td>
         <td>{% if word.example %}{{ word.example }}{% else %} - {% endif %}</td>
       </tr>

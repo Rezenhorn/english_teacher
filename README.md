@@ -7,12 +7,12 @@ A website for an English tutor that has the function of a business card and also
 - User registration
 - Handing out homework to students
 - Tracking learning progress
-- Creating of a personal dictionary with the translation of words, the ability to download a dictionary in the excel format, etc.
+- Creating of a personal dictionary with the translation of words, automatic addition of phonetic transcription, the ability to download a dictionary in the excel format, etc.
 
 ## :hammer_and_wrench: Techs:
 
 - Python 3.7.9
-- Django 3.2.16
+- Django 3.2.19
 - PostgreSQL
 - Testing with Django unit tests
 - Bootstrap 5

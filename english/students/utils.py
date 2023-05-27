@@ -14,7 +14,7 @@ def create_dictionary_xls(username: str) -> xlwt.Workbook:
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-    columns = ["Word", "Translation", "Example"]
+    columns = ["Word", "Transcription", "Translation", "Example"]
 
     for col_num in range(len(columns)):
         worksheet.write(row_num, col_num, columns[col_num], font_style)

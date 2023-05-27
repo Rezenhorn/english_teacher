@@ -7,6 +7,7 @@ services:
       - database:/var/lib/postgresql/data/
     env_file:
       - ./.env
+
   web:
     image: rezenhorn/english:latest
     restart: always

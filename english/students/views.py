@@ -33,14 +33,14 @@ class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
     paginate_by = settings.DICTIONARY_WORDS_PER_PAGE
 
     def get_queryset(self):
-        username = self.kwargs.get("username")
-        query = self.request.GET.get("q")
-        order = self.request.GET.get("o")
-        queryset = Dictionary.objects.filter(student__username=username)
-        if order == "date":
+        queryset = Dictionary.objects.filter(
+            student__username=self.kwargs.get("username")
+        )
+        if self.request.GET.get("o") == "date":
             queryset = queryset.order_by("-date", "word")
+        query = self.request.GET.get("q")
         if query:
-            return queryset.filter(
+            queryset = queryset.filter(
                 Q(word__icontains=query) | Q(translation__icontains=query)
             )
         return queryset
@@ -48,10 +48,13 @@ class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         student = get_object_or_404(User, username=self.kwargs.get("username"))
-        data["title"] = f"{student.first_name}'s dictionary"
-        data["student"] = student
-        data["word_count"] = student.dictionary.count()
-        data["order"] = self.request.GET.get("o")
+        data.update(
+            title=f"{student.first_name}'s dictionary",
+            student=student,
+            word_count=student.dictionary.count(),
+            order=self.request.GET.get("o"),
+            query=self.request.GET.get("q"),
+        )
         return data
 
 
@@ -71,8 +74,7 @@ class DictionaryCreateView(LoginRequiredMixin,
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        username = self.kwargs.get("username")
-        data["username"] = username
+        data.update(username=self.kwargs.get("username"))
         return data
 
 
@@ -107,8 +109,10 @@ class HomeworkCreateView(LoginRequiredMixin,
         data = super().get_context_data(**kwargs)
         username = self.kwargs.get("username")
         student = get_object_or_404(User, username=username)
-        data["title"] = f"New homework for {student}"
-        data["username"] = username
+        data.update(
+            title=f"New homework for {student}",
+            username=username
+        )
         return data
 
 
@@ -126,8 +130,7 @@ class HomeworkUpdateView(LoginRequiredMixin,
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        username = self.kwargs.get("username")
-        data["title"] = f"Edit homework for {username}"
+        data.update(title=f"Edit homework for {self.kwargs.get('username')}")
         return data
 
 
@@ -154,9 +157,8 @@ class ProgressListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        username = self.kwargs.get("username")
-        student = get_object_or_404(User, username=username)
-        data["student"] = student
+        student = get_object_or_404(User, username=self.kwargs.get("username"))
+        data.update(student=student)
         return data
 
 

@@ -30,6 +30,7 @@ jobs:
         pip install -r english/requirements.txt
         unzip english/deps/English-to-IPA.zip
         cd English-to-IPA-master/ && python -m pip install .
+        cd .. && rm -rf English-to-IPA-master/
     - name: Run migrations
       run: python english/manage.py migrate
     - name: Test with flake8

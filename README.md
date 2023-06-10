@@ -39,7 +39,13 @@ docker-compose up -d --build
 
 ```bash
 docker-compose exec web python manage.py migrate
+```
+
+```bash
 docker-compose exec web python manage.py createsuperuser
+```
+
+```bash
 docker-compose exec web python manage.py collectstatic --no-input
 ```
 

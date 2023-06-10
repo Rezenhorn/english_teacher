@@ -28,7 +28,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
         pip install -r english/requirements.txt
-        sudo apt-get update && apt-get install -y unzip
         unzip english/deps/English-to-IPA.zip && python -m pip install english/deps/English-to-IPA-master/
     - name: Run migrations
       run: python english/manage.py migrate

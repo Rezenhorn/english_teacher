@@ -2,7 +2,6 @@ asgiref==3.7.1
 Django==3.2.19
 django-bootstrap-datepicker-plus==5.0.3
 django-bootstrap5==22.2
-eng-to-ipa==0.0.2
 flake8==5.0.4
 flake8-broken-line==0.6.0
 flake8-isort==5.0.0

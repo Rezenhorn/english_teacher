@@ -39,3 +39,7 @@ class StudentsModelTest(TestCase):
         for object, value in str_tests:
             with self.subTest(object=object):
                 self.assertEqual(object, value)
+
+    def test_dictionary_word_has_transcription(self):
+        """Check auto generation of word transcription."""
+        self.assertEqual(self.dictionary.transcription, "tɛst")

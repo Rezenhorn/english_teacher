@@ -23,7 +23,7 @@ A website for an English tutor that has the function of a business card and also
 
 ### Clone the repository:
 
-```
+```bash
 git clone https://github.com/Rezenhorn/english_teacher.git
 ```
 
@@ -31,23 +31,23 @@ git clone https://github.com/Rezenhorn/english_teacher.git
 
 ### Make sure, that Docker is installed on your system and launched. From directory `infra/` start Docker:
 
-```
+```bash
 docker-compose up -d --build
 ```
 
 ### Apply migrations, create superuser, collect static:
 
-```
+```bash
 docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py createsuperuser
 docker-compose exec web python manage.py collectstatic --no-input
 ```
 
-### You will find the running website at URL http://localhost/
+### You will find the running website at URL <http://localhost/>
 
 ## If you want to stop running containers:
 
-```
+```bash
 docker-compose down -v
 ```
 

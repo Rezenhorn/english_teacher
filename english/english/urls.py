@@ -8,6 +8,7 @@ handler500 = "core.views.internal_error"
 urlpatterns = [
     path("", include("about.urls", namespace="about")),
     path("students/", include("students.urls", namespace="students")),
+    path("dictionary/", include("dictionary.urls", namespace="dictionary")),
     path("admin/", admin.site.urls),
     path("auth/", include("users.urls", namespace="users")),
     path("auth/", include("django.contrib.auth.urls")),

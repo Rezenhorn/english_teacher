@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "about.apps.AboutConfig",
     "core.apps.CoreConfig",
     "students.apps.StudentsConfig",
+    "dictionary.apps.DictionaryConfig",
     "users.apps.UsersConfig",
     "django_bootstrap5",
     "bootstrap_datepicker_plus"

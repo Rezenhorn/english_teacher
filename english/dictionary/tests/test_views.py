@@ -2,13 +2,13 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from ..forms import HomeworkForm
-from ..models import Homework, Progress
+from ..forms import DictionaryForm
+from ..models import Dictionary
 
 User = get_user_model()
 
 
-class StudentsViewsTests(TestCase):
+class DictionaryViewsTests(TestCase):
     """Views tests for application Students."""
     @classmethod
     def setUpClass(cls):
@@ -23,14 +23,11 @@ class StudentsViewsTests(TestCase):
             birth_date="2000-01-01"
         )
         cls.superuser = User.objects.create_superuser(username="superuser")
-        cls.homework = Homework.objects.create(
-            description="Description of homework",
+        cls.dictionary = Dictionary.objects.create(
+            word="Test",
+            translation="Тест",
+            example="Test example",
             student=cls.student
-        )
-        cls.progress = Progress.objects.create(
-            topic="Test topic",
-            student=cls.student,
-            done=True
         )
 
     def setUp(self):
@@ -42,9 +39,9 @@ class StudentsViewsTests(TestCase):
     def test_create_pages_show_correct_context(self):
         """Creation pages are formed with correct context."""
         pages = (
-            (reverse("students:add_homework",
+            (reverse("dictionary:add_word",
                      kwargs={"username": self.student.username}),
-                HomeworkForm),
+                DictionaryForm),
         )
         for reverse_name, form in pages:
             with self.subTest(reverse_name=reverse_name):
@@ -54,10 +51,10 @@ class StudentsViewsTests(TestCase):
     def test_edit_pages_show_correct_context(self):
         """Edit pages are formed with correct context."""
         pages = (
-            (reverse("students:edit_homework",
+            (reverse("dictionary:edit_word",
                      kwargs={"username": self.student.username,
-                             "homework_id": self.homework.pk}),
-                HomeworkForm, self.homework),
+                             "dictionary_id": self.dictionary.pk}),
+                DictionaryForm, self.dictionary),
         )
         for reverse_name, form, context in pages:
             with self.subTest(reverse_name=reverse_name):
@@ -70,12 +67,9 @@ class StudentsViewsTests(TestCase):
         with correct context.
         """
         pages = (
-            (reverse("students:student_card",
+            (reverse("dictionary:dictionary",
                      kwargs={"username": self.student.username}),
-                self.homework),
-            (reverse("students:progress",
-                     kwargs={"username": self.student.username}),
-                self.progress)
+                self.dictionary),
         )
         for reverse_name, object in pages:
             with self.subTest(reverse_name=reverse_name):
@@ -85,14 +79,21 @@ class StudentsViewsTests(TestCase):
     def test_objects_not_in_other_student_pages(self):
         """The objects don't end up on another student's pages."""
         pages = (
-            (reverse("students:student_card",
+            (reverse("dictionary:dictionary",
                      kwargs={"username": self.student_non_author.username}),
-                self.homework),
-            (reverse("students:progress",
-                     kwargs={"username": self.student_non_author.username}),
-                self.progress)
+                self.dictionary),
         )
         for reverse_name, object in pages:
             with self.subTest(reverse_name=reverse_name):
                 response = self.superuser_client.get(reverse_name)
                 self.assertNotIn(object, response.context.get("page_obj"))
+
+    def test_dictionary_download(self):
+        """Test for student's dictionary download."""
+        response = self.authorized_client.get(
+            reverse("dictionary:download_dictionary",
+                    kwargs={"username": self.student.username}))
+        self.assertEqual(
+            response.get("Content-Disposition"),
+            f"attachment; filename={self.student.username}'s_dict.xls"
+        )

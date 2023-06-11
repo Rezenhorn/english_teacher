@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.forms import ValidationError
 from django.utils import timezone
 
-from .models import Dictionary, Homework
+from .models import Homework
 
 User = get_user_model()
 
@@ -34,9 +34,3 @@ class HomeworkForm(forms.ModelForm):
                 options={"format": settings.DATE_INPUT_FORMATS}
             )
         }
-
-
-class DictionaryForm(forms.ModelForm):
-    class Meta:
-        model = Dictionary
-        fields = ("word", "translation", "example")

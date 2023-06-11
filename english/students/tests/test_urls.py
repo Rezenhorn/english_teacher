@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from ..models import Dictionary, Homework
+from ..models import Homework
 
 User = get_user_model()
 
@@ -25,11 +25,6 @@ class StudentsURLTests(TestCase):
             birth_date="2000-01-01"
         )
         cls.superuser = User.objects.create_superuser(username="superuser")
-        cls.dictionary = Dictionary.objects.create(
-            word="Test",
-            translation="Тест",
-            student=cls.student
-        )
         cls.homework = Homework.objects.create(
             description="Description of homework",
             student=cls.student
@@ -62,17 +57,6 @@ class StudentsURLTests(TestCase):
              reverse("students:delete_homework",
                      kwargs={"username": self.student.username,
                              "homework_id": self.homework.pk})),
-            (f"/students/{self.student.username}/dictionary/",
-             reverse("students:dictionary",
-                     kwargs={"username": self.student.username})),
-            (f"/students/{self.student.username}/dictionary/add_word/",
-             reverse("students:add_word",
-                     kwargs={"username": self.student.username})),
-            (f"/students/{self.student.username}/dictionary/"
-             f"edit_word/{self.dictionary.pk}/",
-             reverse("students:edit_word",
-                     kwargs={"username": self.student.username,
-                             "dictionary_id": self.dictionary.pk})),
             (f"/students/{self.student.username}/progress/",
              reverse("students:progress",
                      kwargs={"username": self.student.username})),
@@ -103,19 +87,6 @@ class StudentsURLTests(TestCase):
                              "homework_id": self.homework.pk}),
                 HTTPStatus.OK,
                 True),
-            (reverse("students:dictionary",
-                     kwargs={"username": self.student.username}),
-                HTTPStatus.OK,
-                False),
-            (reverse("students:add_word",
-                     kwargs={"username": self.student.username}),
-                HTTPStatus.OK,
-                False),
-            (reverse("students:edit_word",
-                     kwargs={"username": self.student.username,
-                             "dictionary_id": self.dictionary.pk}),
-                HTTPStatus.OK,
-                False),
             (reverse("students:progress",
                      kwargs={"username": self.student.username}),
                 HTTPStatus.OK,
@@ -149,17 +120,10 @@ class StudentsURLTests(TestCase):
         """Student's pages redirect another student to index page."""
         self.authorized_client.force_login(self.student_non_author)
         reverse_names = (
-            reverse("students:add_word",
-                    kwargs={"username": self.student.username}),
             reverse("students:student_card",
-                    kwargs={"username": self.student.username}),
-            reverse("students:download_dictionary",
                     kwargs={"username": self.student.username}),
             reverse("students:progress",
                     kwargs={"username": self.student.username}),
-            reverse("students:edit_word",
-                    kwargs={"username": self.student.username,
-                            "dictionary_id": self.dictionary.pk})
         )
         for url in reverse_names:
             with self.subTest(url=url):
@@ -167,7 +131,7 @@ class StudentsURLTests(TestCase):
                 self.assertRedirects(response, reverse("about:index"))
 
     def test_student_url_redirect_anonymous_on_login(self):
-        """Pages /student/, /dictionary/, /progress/
+        """Pages /student/, /progress/
         redirect anonymous user to login page.
         """
         url_names = (
@@ -176,11 +140,6 @@ class StudentsURLTests(TestCase):
                 urljoin(
                     reverse("users:login"),
                     f"?next=/students/{self.student.username}/")),
-            (reverse("students:dictionary",
-                     kwargs={"username": self.student.username}),
-                urljoin(
-                    reverse("users:login"),
-                    f"?next=/students/{self.student.username}/dictionary/")),
             (reverse("students:progress",
                      kwargs={"username": self.student.username}),
                 urljoin(
@@ -206,16 +165,6 @@ class StudentsURLTests(TestCase):
                     kwargs={"username": self.student.username,
                             "homework_id": self.homework.pk}
                     ): "students/homework_form.html",
-            reverse("students:dictionary",
-                    kwargs={"username": self.student.username}
-                    ): "students/dictionary.html",
-            reverse("students:add_word",
-                    kwargs={"username": self.student.username}
-                    ): "students/dictionary_form.html",
-            reverse("students:edit_word",
-                    kwargs={"username": self.student.username,
-                            "dictionary_id": self.dictionary.pk}
-                    ): "students/dictionary_form.html",
             reverse("students:progress",
                     kwargs={"username": self.student.username}
                     ): "students/progress.html",

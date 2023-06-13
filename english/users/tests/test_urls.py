@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from urllib.parse import urljoin
 
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
@@ -59,3 +60,13 @@ class UsersURLTests(TestCase):
             with self.subTest(name=name):
                 response = self.authorized_client.get(reverse(name))
                 self.assertTemplateUsed(response, template)
+
+    def test_edit_profile_url_redirect_anonymous_on_login(self):
+        """Page /edit_profile/ redirect anonymous user to login page."""
+        url = reverse("users:edit_profile", kwargs={"user_id": self.user.id})
+        redirect = urljoin(
+            reverse("users:login"),
+            f"?next=/auth/{self.user.id}/edit_profile/"
+        )
+        response = self.guest_client.get(url, follow=True)
+        self.assertRedirects(response, redirect)

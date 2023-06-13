@@ -96,3 +96,20 @@ class StudentsViewsTests(TestCase):
             with self.subTest(reverse_name=reverse_name):
                 response = self.superuser_client.get(reverse_name)
                 self.assertNotIn(object, response.context.get("page_obj"))
+
+    def test_superuser_can_delete_homework(self):
+        """Superuser can delete homework and goes to correct page after.."""
+        response = self.superuser_client.post(
+            reverse("students:delete_homework",
+                    kwargs={"username": self.student.username,
+                            "homework_id": self.homework.id})
+        )
+        self.assertRedirects(
+            response,
+            reverse(
+                "students:student_card",
+                kwargs={"username": self.student.username}
+            )
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Homework.objects.filter(id=self.homework.id).exists())

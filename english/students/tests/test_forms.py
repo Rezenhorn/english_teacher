@@ -83,3 +83,27 @@ class StudentsFormTests(TestCase):
                 done=False
             ).exists()
         )
+
+    def test_cant_create_homework_to_past_date(self):
+        """Can't create Homework with a date in the past.."""
+        tasks_count = Homework.objects.count()
+        date = datetime.date.today() - datetime.timedelta(days=1)
+        form_data = {
+            "description": "Edited test homework",
+            "date": date,
+        }
+        response = self.superuser_client.post(
+            reverse("students:edit_homework",
+                    kwargs={"username": self.student.username,
+                            "homework_id": self.homework.pk}),
+            data=form_data,
+            follow=True
+        )
+        self.assertEqual(Homework.objects.count(), tasks_count)
+        self.assertFormError(
+            response,
+            "form",
+            "date",
+            f"Wrong date: {date}. Try to choose the date in future"
+        )
+        self.assertEqual(response.status_code, 200)

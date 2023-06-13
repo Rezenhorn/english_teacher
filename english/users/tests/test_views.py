@@ -14,6 +14,6 @@ class UsersViewsTests(TestCase):
         self.guest_client = Client()
 
     def test_signup_page_show_correct_context(self):
-        """Шаблон signup сформирован с правильным контекстом."""
+        """Signup template formed with correct context."""
         response = self.guest_client.get(reverse("users:signup"))
         self.assertIsInstance(response.context.get("form"), CreationForm)

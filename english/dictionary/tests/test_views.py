@@ -63,9 +63,7 @@ class DictionaryViewsTests(TestCase):
                 self.assertEqual(response.context["form"].instance, context)
 
     def test_pages_show_correct_context(self):
-        """Pages student_card, dictionary, progress are formed
-        with correct context.
-        """
+        """Dictionary, progress are formed with correct context."""
         pages = (
             (reverse("dictionary:dictionary",
                      kwargs={"username": self.student.username}),

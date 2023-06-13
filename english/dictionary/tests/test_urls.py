@@ -12,22 +12,19 @@ User = get_user_model()
 
 class DictionaryURLTests(TestCase):
     """URL tests for application Dictionary."""
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
 
         cls.student = User.objects.create_user(
-            username="student",
-            birth_date="2000-01-01"
+            username="student", birth_date="2000-01-01"
         )
         cls.student_non_author = User.objects.create_user(
-            username="student_non_author",
-            birth_date="2000-01-01"
+            username="student_non_author", birth_date="2000-01-01"
         )
         cls.dictionary = Dictionary.objects.create(
-            word="Test",
-            translation="Тест",
-            student=cls.student
+            word="Test", translation="Тест", student=cls.student
         )
 
     def setUp(self):
@@ -73,7 +70,7 @@ class DictionaryURLTests(TestCase):
                 response = self.authorized_client.get(reverse_name)
                 self.assertEqual(response.status_code, http_status)
 
-    def test_redirect_for_non_author(self):
+    def test_dictionary_redirect_for_non_author(self):
         """Dictionary pages redirect another student to index page."""
         self.authorized_client.force_login(self.student_non_author)
         reverse_names = (
@@ -90,14 +87,53 @@ class DictionaryURLTests(TestCase):
                 response = self.authorized_client.get(url, follow=True)
                 self.assertRedirects(response, reverse("about:index"))
 
-    def test_student_url_redirect_anonymous_on_login(self):
-        """Pages /dictionary/ redirect anonymous user to login page."""
+    def test_dictionary_url_redirect_anonymous_on_login(self):
+        """Dictionary pages redirect anonymous user to login page."""
         url_names = (
-            (reverse("dictionary:dictionary",
-                     kwargs={"username": self.student.username}),
+            (
+                reverse(
+                    "dictionary:dictionary",
+                    kwargs={"username": self.student.username}
+                ),
                 urljoin(
                     reverse("users:login"),
-                    f"?next=/dictionary/{self.student.username}/")),
+                    f"?next=/dictionary/{self.student.username}/",
+                ),
+            ),
+            (
+                reverse(
+                    "dictionary:add_word",
+                    kwargs={"username": self.student.username}
+                ),
+                urljoin(
+                    reverse("users:login"),
+                    f"?next=/dictionary/{self.student.username}/add_word/",
+                ),
+            ),
+            (
+                reverse(
+                    "dictionary:download_dictionary",
+                    kwargs={"username": self.student.username},
+                ),
+                urljoin(
+                    reverse("users:login"),
+                    f"?next=/dictionary/{self.student.username}/download",
+                ),
+            ),
+            (
+                reverse(
+                    "dictionary:edit_word",
+                    kwargs={
+                        "username": self.student.username,
+                        "dictionary_id": self.dictionary.pk,
+                    },
+                ),
+                urljoin(
+                    reverse("users:login"),
+                    (f"?next=/dictionary/{self.student.username}"
+                     f"/edit_word/{self.dictionary.id}/"),
+                ),
+            ),
         )
         for url, redirect in url_names:
             with self.subTest(url=url):

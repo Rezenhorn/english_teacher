@@ -66,7 +66,7 @@ class StudentsViewsTests(TestCase):
                 self.assertEqual(response.context["form"].instance, context)
 
     def test_pages_show_correct_context(self):
-        """Pages student_card, dictionary, progress are formed
+        """Pages student_card and progress are formed
         with correct context.
         """
         pages = (
@@ -98,7 +98,9 @@ class StudentsViewsTests(TestCase):
                 self.assertNotIn(object, response.context.get("page_obj"))
 
     def test_superuser_can_delete_homework(self):
-        """Superuser can delete homework and goes to correct page after.."""
+        """
+        Superuser can delete Homework and is redirected to correct page after.
+        """
         response = self.superuser_client.post(
             reverse("students:delete_homework",
                     kwargs={"username": self.student.username,

@@ -61,7 +61,7 @@ class UsersURLTests(TestCase):
                 response = self.authorized_client.get(reverse(name))
                 self.assertTemplateUsed(response, template)
 
-    def test_edit_profile_url_redirect_anonymous_on_login(self):
+    def test_edit_profile_url_redirects_anonymous_on_login(self):
         """Page /edit_profile/ redirect anonymous user to login page."""
         url = reverse("users:edit_profile", kwargs={"user_id": self.user.id})
         redirect = urljoin(

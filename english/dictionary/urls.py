@@ -16,5 +16,14 @@ urlpatterns = [
          name="edit_word"),
     path("<str:username>/download",
          views.download_dictionary,
-         name="download_dictionary")
+         name="download_dictionary"),
+    path("<str:username>/setup_quiz/",
+         views.SetupQuizFormView.as_view(),
+         name="setup_quiz"),
+    path("<str:username>/quiz/<str:mode>/<int:number_of_words>",
+         views.quiz_view,
+         name="quiz"),
+    path("<str:username>/quiz_result/<int:score>/",
+         views.quiz_result_view,
+         name="quiz_result"),
 ]

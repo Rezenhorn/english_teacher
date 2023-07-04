@@ -1,18 +1,22 @@
+import datetime
+
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, FormView, ListView, UpdateView
 from utils.decorators import author_or_superuser_required
 from utils.mixins import SuperuserOrAuthorMixin
 
-from .forms import DictionaryForm
+from .forms import DictionaryForm, SetupQuizForm
 from .models import Dictionary
-from .utils import create_dictionary_xls
+from .utils import create_dictionary_xls, Quiz
+
 
 User = get_user_model()
 
@@ -91,3 +95,86 @@ def download_dictionary(request, username):
     })
     create_dictionary_xls(username).save(response)
     return response
+
+
+class SetupQuizFormView(LoginRequiredMixin,
+                        SuperuserOrAuthorMixin,
+                        FormView):
+    template_name = "dictionary/quiz_setup.html"
+    form_class = SetupQuizForm
+
+    def form_valid(self, form):
+        """If the form is valid, redirect to the supplied URL."""
+        quiz_mode = form.cleaned_data["quiz_mode"]
+        number_of_words = int(form.cleaned_data["number_of_words"])
+        return HttpResponseRedirect(
+            self.get_success_url(quiz_mode, number_of_words)
+        )
+
+    def get_success_url(self, quiz_mode: str, number_of_words: int):
+        """Return the URL to redirect to after processing a valid form."""
+        return reverse_lazy(
+            "dictionary:quiz",
+            kwargs={
+                "username": self.kwargs.get("username"),
+                "mode": quiz_mode,
+                "number_of_words": number_of_words
+            }
+        )
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data.update(username=self.kwargs.get("username"))
+        return data
+
+
+@login_required
+@author_or_superuser_required
+def quiz_view(request, username, mode, number_of_words):
+    if request.method == "POST":
+        questions = request.session.get("questions")
+        if questions is None:
+            messages.info(request, message="Please, set up the new quiz")
+            return redirect("dictionary:setup_quiz", username)
+        quiz = Quiz(username)
+        questions = [
+            {**question, "user_answer": request.POST.get(question["word"])}
+            for question in questions
+        ]
+        quiz.questions = questions
+        score = quiz.count_correct_answers()
+        request.session["result_percentage"] = int(score / number_of_words * 100)
+        request.session["questions"] = questions
+        return redirect(
+            "dictionary:quiz_result", score=score, username=username
+        )
+    quiz = Quiz(username)
+    quiz.generate_questions(mode, number_of_words)
+    questions = quiz.questions
+    request.session["questions"] = questions
+    context = {
+        "questions": questions,
+        "username": username,
+        "mode": mode,
+        "number_of_words": len(questions)
+    }
+    return render(request, "dictionary/quiz.html", context)
+
+
+@login_required
+@author_or_superuser_required
+def quiz_result_view(request, username, score):
+    questions = request.session.get("questions")
+    if questions is None:
+        messages.info(request, message="Please, set up the new quiz")
+        return redirect("dictionary:setup_quiz", username)
+    result_percentage = request.session.get("result_percentage")
+    del request.session["questions"]
+    del request.session["result_percentage"]
+    context = {
+        "username": username,
+        "score": score,
+        "questions": questions,
+        "result_percentage": result_percentage
+    }
+    return render(request, "dictionary/quiz_result.html", context)

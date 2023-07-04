@@ -1,5 +1,3 @@
-import datetime
-
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -15,8 +13,7 @@ from utils.mixins import SuperuserOrAuthorMixin
 
 from .forms import DictionaryForm, SetupQuizForm
 from .models import Dictionary
-from .utils import create_dictionary_xls, Quiz
-
+from .utils import Quiz, create_dictionary_xls
 
 User = get_user_model()
 
@@ -143,10 +140,14 @@ def quiz_view(request, username, mode, number_of_words):
         ]
         quiz.questions = questions
         score = quiz.count_correct_answers()
-        request.session["result_percentage"] = int(score / number_of_words * 100)
+        request.session["result_percentage"] = int(
+            score / number_of_words * 100
+        )
         request.session["questions"] = questions
         return redirect(
-            "dictionary:quiz_result", score=score, username=username
+            "dictionary:quiz_result",
+            score=score,
+            username=username
         )
     quiz = Quiz(username)
     quiz.generate_questions(mode, number_of_words)

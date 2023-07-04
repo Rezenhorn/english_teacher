@@ -3,11 +3,10 @@ from typing import Iterable
 
 import xlwt
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 from django.shortcuts import get_object_or_404
 
-from dictionary.models import Dictionary
-
-from django.db.models import Count
+from .models import Dictionary
 
 User = get_user_model()
 

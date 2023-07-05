@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}
+  Vocabulary Quiz
+{% endblock %}
+{% block content %}
+<div class="d-flex flex-column">
+  <a href="{% url "students:student_card" username %}" class="card-link">&lt; My card</a>
+  <a href="{% url "dictionary:setup_quiz" username %}" class="card-link mb-4">&lt; Set up new quiz</a>
+</div>
+<p>Your score: {{ score }}</p>
+<div class="progress" role="progressbar" aria-valuenow="{{ result_percentage }}" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar bg-success" style="width: {{ result_percentage }}%">{{ result_percentage }}%</div>
+</div>
+<br>
+{% for question in questions %}
+  <div class="card {% if question.user_answer == question.correct_answer %}border-success{% else %}border-danger{% endif %}">
+    <div class="card-body ms-4">
+      <h3 class="card-title">{{ question.word }}</h3>
+      {% for option in question.options %}
+      <div class="form-check">
+        <input class="form-check-input {% if option == question.correct_answer %}is-valid{% else %}is-invalid{% endif %}" type="radio" value="{{ option }}" disabled {% if question.user_answer == option %}checked{% endif %}>
+        <label class="form-check-label {% if option == question.correct_answer %}fw-bold{% endif %}">{{ option }}</label>
+        <br>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <br>
+{% endfor %}
+{% endblock %}

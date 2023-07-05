@@ -10,6 +10,7 @@
     <p class="card-text">Aim of education: {{ student.aim }}</p>
     {% if request.user.is_superuser %}<a href="{% url 'students:add_homework' student.username %}" class="card-link">Add homework</a>{% endif %}
     <a href="{% url 'dictionary:dictionary' student.username %}" class="card-link">My dictionary</a>
+    <a href="{% url 'dictionary:setup_quiz' student.username %}" class="card-link">Dictionary quiz</a>
     <a href="{% url 'students:progress' student.username %}" class="card-link">My progress</a>
   </div>
 </div>

@@ -8,6 +8,9 @@ A website for an English tutor that has the function of a business card and also
 - Handing out homework to students
 - Tracking learning progress
 - Creating of a personal dictionary with the translation of words, automatic addition of phonetic transcription, the ability to download a dictionary in the excel format, etc.
+- Take tests with words from your dictionary in different modes.
+
+The website is deployed and used for its intended purpose.
 
 ## :hammer_and_wrench: Techs:
 

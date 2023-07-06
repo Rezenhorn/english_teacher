@@ -12,6 +12,10 @@ from .models import Dictionary
 User = get_user_model()
 
 
+class EmptyDictionaryError(Exception):
+    pass
+
+
 def create_dictionary_xls(username: str) -> xlwt.Workbook:
     """Return the excel workbook with student's dictionary."""
     workbook = xlwt.Workbook(encoding="utf-8")
@@ -87,14 +91,21 @@ class Quiz:
             "all_words": self._get_dictionary_objects_all,
             "last_lesson": self._get_dictionary_objects_last_lesson
         }
-        words = modes[mode](questions_num)
+        try:
+            words = modes[mode](questions_num)
+        except IndexError:
+            raise EmptyDictionaryError("Student's dictionary is empty.")
         for word in words:
             translations_except_current = set(
                 Dictionary.objects.values_list("translation", flat=True)
             )
             translations_except_current.discard(word.translation)
-
-            options = random.sample(translations_except_current, k=2)
+            try:
+                options = random.sample(translations_except_current, k=2)
+            except ValueError:
+                raise EmptyDictionaryError(
+                    "There are too few words in the dictionary for the quiz."
+                )
             options.append(word.translation)
             random.shuffle(options)
 

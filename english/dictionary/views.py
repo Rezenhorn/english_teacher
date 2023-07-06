@@ -13,7 +13,7 @@ from utils.mixins import SuperuserOrAuthorMixin
 
 from .forms import DictionaryForm, SetupQuizForm
 from .models import Dictionary
-from .utils import Quiz, create_dictionary_xls
+from .utils import EmptyDictionaryError, Quiz, create_dictionary_xls
 
 User = get_user_model()
 
@@ -150,7 +150,14 @@ def quiz_view(request, username, mode, number_of_words):
             username=username
         )
     quiz = Quiz(username)
-    quiz.generate_questions(mode, number_of_words)
+    try:
+        quiz.generate_questions(mode, number_of_words)
+    except EmptyDictionaryError:
+        messages.info(
+            request,
+            "Please, add a few words to your dictionary before taking the quiz"
+        )
+        return redirect("dictionary:dictionary", username)
     questions = quiz.questions
     request.session["questions"] = questions
     context = {

@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "students.apps.StudentsConfig",
     "dictionary.apps.DictionaryConfig",
     "users.apps.UsersConfig",
+    "quiz.apps.QuizConfig",
     "django_bootstrap5",
     "bootstrap_datepicker_plus"
 ]

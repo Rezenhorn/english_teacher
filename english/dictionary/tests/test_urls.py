@@ -52,7 +52,7 @@ class DictionaryURLTests(TestCase):
                 self.assertEqual(url, reverse_name)
 
     def test_dictionary_url_exists_at_desired_location(self):
-        """Test of pages accessibility for guest and authorized user."""
+        """Test of pages accessibility for authorized user."""
         reverse_names = [
             (reverse("dictionary:dictionary",
                      kwargs={"username": self.student.username}),
@@ -80,7 +80,7 @@ class DictionaryURLTests(TestCase):
                     kwargs={"username": self.student.username}),
             reverse("dictionary:edit_word",
                     kwargs={"username": self.student.username,
-                            "dictionary_id": self.dictionary.pk})
+                            "dictionary_id": self.dictionary.pk}),
         )
         for url in reverse_names:
             with self.subTest(url=url):

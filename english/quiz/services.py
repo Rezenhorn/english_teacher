@@ -1,11 +1,11 @@
 import random
 from typing import Iterable, Literal
 
+from dictionary.models import Dictionary
 from django.db import transaction
 from django.db.models import Count
-
-from dictionary.models import Dictionary
 from users.models import User
+
 from .models import Question, Quiz
 
 

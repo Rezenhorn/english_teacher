@@ -1,7 +1,6 @@
+from dictionary.models import Dictionary
 from django.contrib.auth import get_user_model
 from django.db import models
-
-from dictionary.models import Dictionary
 
 User = get_user_model()
 

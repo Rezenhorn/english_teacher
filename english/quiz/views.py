@@ -65,18 +65,20 @@ class SetupQuizFormView(LoginRequiredMixin,
 @author_or_superuser_required
 def quiz_view(request, username, quiz_id):
     quiz = get_object_or_404(Quiz, id=quiz_id)
+    quiz_questions = quiz.all_questions
     context = {
-        "quiz": quiz,
+        "questions": quiz_questions,
+        "quiz_pk": quiz.pk,
         "username": username
     }
     if request.method == "POST":
-        for question in (questions := quiz.all_questions):
+        for question in quiz_questions:
             question.user_answer = request.POST.get(question.word.word)
             question.save()
         score = quiz.count_score()
         context.update(
             score=score,
-            result_percentage=int(score / len(questions) * 100)
+            result_percentage=int(score / len(quiz_questions) * 100)
         )
         return render(request, "quiz/quiz_result.html", context)
     return render(request, "quiz/quiz.html", context)

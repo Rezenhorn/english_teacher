@@ -16,8 +16,8 @@ class Quiz(models.Model):
                                     null=True)
 
     @property
-    def all_questions(self) -> list:
-        return self.questions.all()
+    def all_questions(self) -> models.query.QuerySet:
+        return self.questions.select_related("word")
 
     def count_score(self) -> int:
         """Returns with number of questions with correct answers."""

@@ -3,9 +3,9 @@
   Vocabulary Quiz
 {% endblock %}
 {% block content %}
-<form method="post" action="{% url "quiz:quiz" username quiz.pk %}">
+<form method="post" action="{% url "quiz:quiz" username quiz_pk %}">
   {% csrf_token %}
-  {% for question in quiz.all_questions %}
+  {% for question in questions %}
   <div class="col-10 mx-auto card">
     <div class="card-body ms-4">
       <h3 class="card-title mb-3">{{ question.word.word }}</h3>

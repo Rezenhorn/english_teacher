@@ -12,7 +12,7 @@
   <div class="progress-bar bg-success" style="width: {{ result_percentage }}%">{{ result_percentage }}%</div>
 </div>
 <br>
-{% for question in quiz.all_questions %}
+{% for question in questions %}
   <div class="card {% if question.is_answer_correct %}border-success{% else %}border-danger{% endif %}">
     <div class="card-body ms-4">
       <h3 class="card-title">{{ question.word }}</h3>

@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "quiz.apps.QuizConfig",
     "django_bootstrap5",
-    "bootstrap_datepicker_plus"
+    "bootstrap_datepicker_plus",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -39,6 +40,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "english.urls"
@@ -146,3 +148,7 @@ DICTIONARY_WORDS_PER_PAGE = 30
 CSRF_FAILURE_VIEW = "core.views.csrf_failure"
 
 DATE_INPUT_FORMATS = "DD.MM.YYYY"
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

@@ -3,6 +3,7 @@ coverage==5.5
 Django==3.2.20
 django-bootstrap-datepicker-plus==5.0.3
 django-bootstrap5==22.2
+django-debug-toolbar==3.2.4
 flake8==5.0.4
 flake8-broken-line==0.6.0
 flake8-isort==5.0.0

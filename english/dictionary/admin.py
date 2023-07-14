@@ -9,4 +9,4 @@ class DictionaryAdmin(admin.ModelAdmin):
         "word", "translation", "transcription", "example", "student", "date"
     )
     list_filter = ("student",)
-    search_fields = ("word", "translation", "student")
+    search_fields = ("word", "translation")

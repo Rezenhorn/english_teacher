@@ -85,7 +85,7 @@ class StudentsFormTests(TestCase):
         )
 
     def test_cant_create_homework_to_past_date(self):
-        """Can't create Homework with a date in the past.."""
+        """Can't create Homework with a date in the past."""
         tasks_count = Homework.objects.count()
         date = datetime.date.today() - datetime.timedelta(days=1)
         form_data = {

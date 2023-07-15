@@ -12,7 +12,7 @@ from utils.mixins import SuperuserOrAuthorMixin
 
 from .forms import DictionaryForm
 from .models import Dictionary
-from .utils import create_dictionary_xls
+from .services import create_dictionary_xls
 
 User = get_user_model()
 

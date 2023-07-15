@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from utils.decorators import author_or_superuser_required
+from utils.messages import HOMEWORK_UPDATED_MESSAGE
 from utils.mixins import SuperuserOrAuthorMixin, SuperuserRequiredMixin
 
 from .forms import HomeworkForm
@@ -113,7 +114,7 @@ def student_card(request, username):
         homework.update(done=False)
         for id in id_list:
             homework.filter(pk=int(id)).update(done=True)
-        messages.success(request, "Homeworks status has been updated")
+        messages.success(request, HOMEWORK_UPDATED_MESSAGE)
         return redirect("students:student_card", username)
     context = {
         "page_obj": paginator(request.GET.get("page"), homework),

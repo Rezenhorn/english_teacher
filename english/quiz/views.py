@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from utils.decorators import author_or_superuser_required
+from utils.messages import SMALL_DICTIONARY_FOR_QUIZ_MESSAGE
 from utils.mixins import SuperuserOrAuthorMixin
 
 from .forms import SetupQuizForm
@@ -35,11 +36,7 @@ class SetupQuizFormView(LoginRequiredMixin,
                 questions_num=number_of_words
             )
         except EmptyDictionaryError:
-            messages.info(
-                self.request,
-                "Please, add a few words "
-                "to your dictionary before taking the quiz"
-            )
+            messages.warning(self.request, SMALL_DICTIONARY_FOR_QUIZ_MESSAGE)
             return redirect(
                 "dictionary:dictionary", self.kwargs.get("username")
             )

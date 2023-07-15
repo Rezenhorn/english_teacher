@@ -37,7 +37,7 @@ class DictionaryViewsTests(TestCase):
         self.superuser_client.force_login(self.superuser)
 
     def test_create_pages_show_correct_context(self):
-        """Creation pages are formed with correct context."""
+        """Dictionary creation page is formed with correct context."""
         pages = (
             (reverse("dictionary:add_word",
                      kwargs={"username": self.student.username}),
@@ -49,7 +49,7 @@ class DictionaryViewsTests(TestCase):
                 self.assertIsInstance(response.context.get("form"), form)
 
     def test_edit_pages_show_correct_context(self):
-        """Edit pages are formed with correct context."""
+        """Dictionary edit page is formed with correct context."""
         pages = (
             (reverse("dictionary:edit_word",
                      kwargs={"username": self.student.username,
@@ -63,7 +63,7 @@ class DictionaryViewsTests(TestCase):
                 self.assertEqual(response.context["form"].instance, context)
 
     def test_pages_show_correct_context(self):
-        """Dictionary, progress are formed with correct context."""
+        """Dictionary page is formed with correct context."""
         pages = (
             (reverse("dictionary:dictionary",
                      kwargs={"username": self.student.username}),

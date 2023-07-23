@@ -65,7 +65,7 @@ class HomeworkUpdateView(LoginRequiredMixin,
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        student = get_object_or_404(User, username=self.kwargs.get('username'))
+        student = get_object_or_404(User, username=self.kwargs.get("username"))
         data.update(title=f"Edit homework for {student}")
         return data
 

@@ -1,14 +1,49 @@
 {% extends "base.html" %}
 {% block title %} {{ title }} {% endblock %}
+{% load user_filters %}
+{% block stylesheets %}
+{% load static %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
 {% block content %}
-<h2 style="text-align: center">{{ title }}</h2>
-<hr>
-<form method="post" enctype="multipart/form-data" action="{% if form.instance.pk %}{% url 'students:edit_homework' homework.student.username form.instance.pk %}{% else %}{% url 'students:add_homework' username %}{% endif %}">
-  {% csrf_token %}
-  {{ form.media }}
-  {% include 'includes/generic_form.html' %}
-  <article style="text-align: center">
-    <button type="submit" class="btn btn-primary mt-3">{% if form.instance.pk %}Edit homework{% else %}Add homework{% endif %}</button>
-  </article>
-</form>
+<section class="section-cta section" id="cta">
+  <div class="cta">
+    <h2 class="cta__header">{{ title }}</h2>
+    {% if form.errors %}
+    {% for field in form %}
+      {% for error in field.errors %}
+        <div class="cta-form__error">
+          {{ error|escape }}
+        </div>
+      {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+      <div class="cta-form__error">
+        {{ error|escape }}
+      </div>
+    {% endfor %}
+    {% endif %}
+    {{ form.media }}
+    <form method="post" class="cta-form"
+    {% if action_url %}
+      action="{% url action_url %}"
+    {% endif %}
+    >
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="double-wide">
+        <label for="{{ field.id_for_label }}">
+          {{ field.label }}
+          {% if field.field.required %}
+            <span>*</span>
+          {% endif %}
+        </label>
+        {{ field|addclass:"form-control" }}
+        <small id="{{ field.id_for_label }}-help" class="cta-form__help-text">{{ field.help_text|safe }}</small>
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-form double-wide">{% if form.instance.pk %}Edit homework{% else %}Add homework{% endif %}</button>
+    </form>
+  </div>
+</section>
 {% endblock %}

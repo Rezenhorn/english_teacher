@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
-from utils.mixins import SuperuserOrAuthorMixin
+from utils.mixins import UserOrSuperuserMixin
 
 from .forms import CreationForm, UserEditForm
 
@@ -17,7 +17,7 @@ class SignUp(CreateView):
 
 
 class UserEditView(LoginRequiredMixin,
-                   SuperuserOrAuthorMixin,
+                   UserOrSuperuserMixin,
                    UpdateView):
     """Profile info edit view."""
     queryset = User.objects.all()

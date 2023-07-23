@@ -1,0 +1,144 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+*:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.8rem rgba(24, 100, 171, 0.178);
+}
+
+html {
+  /* font-size: 10px; */
+  /* 10px / 16px = 0.625 = 62.5% */
+  /* Percentage of user's browser font-size setting */
+  font-size: 62.5%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Bitter', sans-serif;
+  line-height: 1;
+  font-weight: 400;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+main {
+  flex: 1;
+}
+
+.margin-bt-sm {
+  margin-bottom: 1.6rem;
+}
+
+.margin-bt-md {
+  margin-bottom: 3.2rem;
+}
+
+.margin-bt-lg {
+  margin-bottom: 4.8rem;
+}
+
+.heading-primary {
+  font-size: 5.2rem;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.heading-secondary {
+  font-size: 4.4rem;
+  line-height: 1.2;
+}
+
+.heading-tertiary {
+  font-size: 2.4rem;
+}
+
+.subheading {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #1864ab;
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+}
+
+.section {
+  max-width: 130rem;
+  margin: 0 auto;
+}
+
+/***************************/
+/*BUTTONS*/
+/***************************/
+
+.btn {
+  text-align: center;
+  font-size: 1.6rem;
+  padding: 1rem 2rem;
+  border-radius: 9px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  font-family: inherit;
+  transition: all 0.3s;
+}
+
+.btn-lg {
+  font-size: 2rem;
+  padding: 1.2rem 2.8rem;
+}
+
+.btn-main {
+  background-color: #1864ab;
+  color: #fff;
+}
+
+.btn-main:hover,
+.btn-main:active {
+  background-color: #1c7ed6;
+  color: #fff;
+}
+
+.btn-second {
+  background-color: #fff;
+  color: #1864ab;
+}
+
+.btn-second:hover,
+.btn-second:active {
+  box-shadow: inset 0 0 0 3px #1864ab;
+  color: #1864ab;
+}
+
+.btn-danger {
+  background-color: #d81c1c;
+  color: #fff;
+}
+
+.btn-danger:hover,
+.btn-danger:active {
+  background-color: #f03f3f;
+  color: #fff;
+}
+
+.btn-form {
+  /* display: inline-block; */
+  background-color: #1864ab;
+  color: #fff;
+  padding: 1.28rem;
+}
+
+.btn-form:hover,
+.btn-form:active {
+  color: #1864ab;
+  background-color: #fff;
+}

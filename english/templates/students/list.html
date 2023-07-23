@@ -2,53 +2,54 @@
 {% block title %}
 List of students
 {% endblock %}
+{% block stylesheets %}
+<link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+{% endblock %}
 {% block content %}
-<h2 style="text-align: center">Students</h2>
-<hr>
-<div class="accordion" id="accordionPanelsStayOpenExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-        <h4>Active students</h4>
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-      <div class="accordion-body">
-        <ul class="list-group list-group-flush">
-            {% for student in student_list.active %}
-              <a href="{{ student.get_absolute_url }}" class="list-group-item">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">{{ student }}</h5>
-                  <small>{{ student.age }} years old</small>
-                </div>
-                <p class="mb-1">{{ student.aim }}</p>
-              </a>
-            {% endfor %}
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-        <h4>Inactive students</h4>
-    </button>
-    </h2>
-    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-      <div class="accordion-body">
-        <ul class="list-group list-group-flush">
-          {% for student in student_list.inactive %}
-            <a href="{{ student.get_absolute_url }}" class="list-group-item">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ student }}</h5>
-                <small>{{ student.age }} years old</small>
-              </div>
-              <p class="mb-1">{{ student.aim }}</p>
+<section class="accordion-container">
+  <h2 class="accordion-container__header">Students</h2>
+  <div class="accordion">
+    <div class="accordion-item" id="active">
+      <a class="accordion-link" href="#active">
+        <h3 class="accordion__header">Active students</h3>
+        <i class="icon ion-md-arrow-forward"></i>
+        <i class="icon ion-md-arrow-down"></i>
+      </a>
+      <div class="accordion__content">
+        <ul class="accordion__list">
+          {% for student in student_list.active %}
+          <li class="accordion__list-item">
+            <a class="accordion__link" href="{{ student.get_absolute_url }}">
+              <h5>{{ student }}</h5>
+              <small>{{ student.aim }}</small>
             </a>
+          </li>
           {% endfor %}
         </ul>
       </div>
+      <hr>
+    </div>
+    <div class="accordion-item" id="inactive">
+      <a class="accordion-link" href="#inactive">
+        <h3 class="accordion__header">Inactive students</h3>
+        <i class="icon ion-md-arrow-forward"></i>
+        <i class="icon ion-md-arrow-down"></i>
+      </a>
+      <div class="accordion__content">
+        <ul class="accordion__list">
+          {% for student in student_list.inactive %}
+          <li class="accordion__list-item">
+            <a href="{{ student.get_absolute_url }}">
+              <h5>{{ student }}</h5>
+              <small>{{ student.aim }}</small>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <hr>
     </div>
   </div>
-</div>
+</section>
+
 {% endblock %}

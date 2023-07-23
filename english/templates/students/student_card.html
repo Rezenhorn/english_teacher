@@ -2,49 +2,53 @@
 {% block title %}
   {{ student }} card
 {% endblock %}
+{% block stylesheets %}
+{% load static %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
 {% block content %}
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">{{ student }} {% if not student.is_active %} (inactive) {% endif %}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">{{ student.age }} years old</h6>
-    <p class="card-text">Aim of education: {{ student.aim }}</p>
-    {% if request.user.is_superuser %}<a href="{% url 'students:add_homework' student.username %}" class="card-link">Add homework</a>{% endif %}
-    <a href="{% url 'dictionary:dictionary' student.username %}" class="card-link">My dictionary</a>
-    <a href="{% url 'quiz:quiz_setup' student.username %}" class="card-link">Dictionary quiz</a>
-    <a href="{% url 'students:progress' student.username %}" class="card-link">My progress</a>
+<div class="card student-card">
+  <div class="student-card__header">
+    <h2 class="student-card__title">{{ student }} {% if not student.is_active %} (inactive) {% endif %}</h2>
+    <h5 class="student-card__subtitle">{{ student.age }} years old</h5>
+    <p class="student-card__text">Aim of education: {{ student.aim }}</p>
   </div>
+  <ul class="student-card__nav">
+    {% if request.user.is_superuser %}
+    <li><a class="student-card__nav-link" href="{% url 'students:add_homework' student.username %}">Add homework</a></li>
+    {% endif %}
+    <li><a class="student-card__nav-link" href="{% url 'dictionary:dictionary' student.username %}">My dictionary</a></li>
+    <li><a class="student-card__nav-link" href="{% url 'quiz:quiz_setup' student.username %}">Dictionary quiz</a></li>
+    <li><a class="student-card__nav-link" href="{% url 'students:progress' student.username %}">My progress</a></li>
+  </ul>
 </div>
 {% if student.homework.all %}
-  <form action="" method="POST">
-    {% csrf_token %}
-    <div class="container text-center">
-      <div class="hstack gap-3">
-        <h3 style="padding-top: 20px;padding-bottom: 20px;"> Homework: </h3>
-        <button class="btn btn-secondary" style="padding: 14px 14px;font-size:12px" type="submit">Update status of homeworks</button>
+<form action="" method="POST">
+  {% csrf_token %}
+  <div class="update-btn-container">
+    <button class="btn btn-main" type="submit">Update homework statuses</button>
+  </div>
+  {% for homework in page_obj %}
+  <div class="card homework-card{% if homework.done %} card_success{% endif %}">
+    <div class="homework-card__heading">
+      <h3 class="homework-card__header">Homework for {{ homework.date|date:"d E Y" }}</h3>
+      {% if request.user.is_superuser %}
+      <div class="homework-card__buttons">
+        <a class="homework-card__button" href="{% url 'students:edit_homework' student.username homework.pk %}" type="button">&#9998;</a>
+        <a class="homework-card__button" href="{% url 'students:delete_homework' student.username homework.pk %}" type="button">&#10006;</a>
       </div>
+      {% endif %}
     </div>
-    {% for homework in page_obj %}
-    <div class="card {% if homework.done %}border-success{% endif %}">
-      <div class="card-header hstack gap-3">
-        Homework for {{ homework.date|date:"d E Y" }}
-        <div class="vr"></div>
-        {% if request.user.is_superuser %}
-        <a href="{% url 'students:edit_homework' student.username homework.pk %}" class="card-link">Edit homework</a>
-        <a type="button" class="btn-close" aria-label="Close" href="{% url 'students:delete_homework' student.username homework.pk %}"></a>
-        {% endif %}
-      </div>
-      <div class="card-body">
-        {{ homework.description|linebreaks }}
-      </div>
-      <div class="card-footer d-flex {% if homework.done %}text-bg-success{% endif %}">
-        <div class="form-check">
-          Done<input class="form-check-input" type="checkbox" {% if homework.done %}checked{% endif %} value={{ homework.id }} name="boxes">
-        </div>
-      </div>
+    <div class="homework-card__text">
+      {{ homework.description|linebreaks }}
     </div>
-    <hr>
-    {% endfor %}
-  </form>
+    <div class="homework-card__footer">
+      <input class="homework-card__checkbox" type="checkbox" {% if homework.done %}checked{% endif %} value={{ homework.id }} id={{ homework.id }} name="boxes">
+      <label class="homework-card__checkbox-label" for="{{ homework.id }}">Done</label>
+    </div>
+  </div>
+  {% endfor %}
+</form>
 {% include 'includes/paginator.html' %}
 {% endif %}
 {% endblock %}

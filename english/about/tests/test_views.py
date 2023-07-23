@@ -9,7 +9,6 @@ class AboutViewsTests(TestCase):
     def test_about_url_uses_correct_template(self):
         """URL-address uses correct template."""
         templates_pages_names = {
-            reverse("about:about"): "about/about_me.html",
             reverse("about:index"): "about/index.html",
         }
         for reverse_name, template in templates_pages_names.items():

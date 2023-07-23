@@ -1,13 +1,44 @@
 {% extends "base.html" %}
 {% block title %} {% if form.instance.pk %}Edit word{% else %}Add word to dictionary{% endif %} {% endblock %}
 {% block content %}
-<h2 style="text-align: center">{% if form.instance.pk %}Edit word{% else %}Add new word{% endif %}</h2>
-<hr>
-<form method="post" enctype="multipart/form-data" action="{% if form.instance.pk %}{% url 'dictionary:edit_word' dictionary.student.username form.instance.pk %}{% else %}{% url 'dictionary:add_word' username %}{% endif %}">
-  {% csrf_token %}
-  {% include 'includes/generic_form.html' %}
-  <article style="text-align: center">
-    <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Edit word{% else %}Add word{% endif %}</button>
-  </article>
-</form>
+<section class="section-cta section" id="cta">
+  <div class="cta">
+    <h2 class="cta__header">{% if form.instance.pk %}Edit word{% else %}Add new word{% endif %}</h2>
+    {% if form.errors %}
+    {% for field in form %}
+      {% for error in field.errors %}
+        <div class="cta-form__error">
+          {{ error|escape }}
+        </div>
+      {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+      <div class="cta-form__error">
+        {{ error|escape }}
+      </div>
+    {% endfor %}
+    {% endif %}
+    {{ form.media }}
+    <form method="post" class="cta-form"
+    {% if action_url %}
+      action="{% url action_url %}"
+    {% endif %}
+    >
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="double-wide">
+        <label for="{{ field.id_for_label }}">
+          {{ field.label }}
+          {% if field.field.required %}
+            <span>*</span>
+          {% endif %}
+        </label>
+        {{ field }}
+        <small id="{{ field.id_for_label }}-help" class="cta-form__help-text">{{ field.help_text|safe }}</small>
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-form double-wide">{% if form.instance.pk %}Edit word{% else %}Add word{% endif %}</button>
+    </form>
+  </div>
+</section>
 {% endblock %}

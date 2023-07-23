@@ -3,25 +3,21 @@
   Vocabulary Quiz
 {% endblock %}
 {% block content %}
-<form method="post" action="{% url "quiz:quiz" username quiz_pk %}">
+<form class="quiz" method="post" action="{% url "quiz:quiz" username quiz_pk %}">
   {% csrf_token %}
   {% for question in questions %}
-  <div class="col-10 mx-auto card">
-    <div class="card-body ms-4">
-      <h3 class="card-title mb-3">{{ question.word.word }}</h3>
-      {% for option in question.options %}
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="{{ question.word }}" value="{{ option }}" id="{{ question.word }}.{{ option }}" required>
-        <label class="form-check-label" for="{{ question.word }}.{{ option }}">{{ option }}</label>
-        <br>
-      </div>
-      {% endfor %}
+  <div class="card quiz-card">
+    <h3 class="quiz-card__header">{{ question.word.word }}</h3>
+    {% for option in question.options %}
+    <div>
+      <input type="radio" name="{{ question.word }}" value="{{ option }}" id="{{ question.word }}.{{ option }}" required>
+      <label class="quiz-card__label" for="{{ question.word }}.{{ option }}">{{ option }}</label>
     </div>
+    {% endfor %}
   </div>
-  <br>
   {% endfor %}
-  <div class="d-grid col-4 mx-auto">
-    <input class="btn btn-primary" type="submit" value="Submit">
+  <div class="quiz-card__button">
+    <button class="btn btn-main btn-lg" type="submit">Submit</button>
   </div>
 </form>
 {% endblock %}

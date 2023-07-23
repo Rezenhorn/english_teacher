@@ -1,103 +1,12 @@
 {% extends "base.html" %}
 {% load user_filters %}
 {% block title %}Sign up{% endblock %}
+{% block stylesheets %}
+{% load static %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-header">Sign up</div>
-        <div class="card-body">
-          {% if form.errors %}
-            {% for field in form %}
-              {% for error in field.errors %}
-                <div class="alert alert-danger">
-                  {{ error|escape }}
-                </div>
-              {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-              <div class="alert alert-danger">
-                {{ error|escape }}
-              </div>
-            {% endfor %}
-          {% endif %}
-          {{ form.media }}
-          <form method="post" action="{% url 'users:signup' %}">
-            {% csrf_token %}
-            <div class="row mb-3">
-              <div class="col">
-                <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}
-                  {% if form.first_name.field.required %}
-                    <span class="required text-danger">*</span>
-                  {% endif %}
-                </label>
-                {{ form.first_name|addclass:"form-control" }}
-              </div>
-              <div class="col">
-                <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}
-                  {% if form.last_name.field.required %}
-                    <span class="required text-danger">*</span>
-                  {% endif %}
-                </label>
-                {{ form.last_name|addclass:"form-control" }}
-              </div>
-              <div class="col">
-                <label for="{{ form.birth_date.id_for_label }}">{{ form.birth_date.label }}
-                  {% if form.birth_date.field.required %}
-                    <span class="required text-danger">*</span>
-                  {% endif %}
-                </label>
-                {{ form.birth_date|addclass:"form-control" }}
-                <small id="{{ form.birth_date.id_for_label }}-help" class="form-text text-muted">{{ form.birth_date.help_text|safe }}</small>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="{{ form.username.id_for_label }}">{{ form.username.label }}
-                {% if form.username.field.required %}
-                  <span class="required text-danger">*</span>
-                {% endif %}
-              </label>
-              {{ form.username|addclass:"form-control" }}
-              <small id="{{ form.username.id_for_label }}-help" class="form-text text-muted">{{ form.username.help_text|safe }}</small>
-            </div>
-            <div class="mb-3">
-              <label for="{{ form.email.id_for_label }}">{{ form.email.label }}
-                {% if form.email.field.required %}
-                  <span class="required text-danger">*</span>
-                {% endif %}
-              </label>
-              {{ form.email|addclass:"form-control" }}
-            </div>
-            <div class="mb-3">
-              <label for="{{ form.aim.id_for_label }}">{{ form.aim.label }}
-                {% if form.aim.field.required %}
-                  <span class="required text-danger">*</span>
-                {% endif %}
-              </label>
-              {{ form.aim|addclass:"form-control" }}
-              <small id="{{ form.aim.id_for_label }}-help" class="form-text text-muted">{{ form.aim.help_text|safe }}</small>
-            </div>
-            <div class="mb-3">
-              <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}
-                <span class="required text-danger">*</span>
-              </label>
-              {{ form.password1|addclass:"form-control" }}
-              <small id="{{ form.password1.id_for_label }}-help" class="form-text text-muted">{{ form.password1.help_text|safe }}</small>
-            </div>
-            <div class="mb-3">
-              <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}
-                <span class="required text-danger">*</span>
-              </label>
-              {{ form.password2|addclass:"form-control" }}
-              <small id="{{ form.password2.id_for_label }}-help" class="form-text text-muted">{{ form.password2.help_text|safe }}</small>
-            </div>
-            <article style="text-align: center">
-              <button type="submit" class="btn btn-primary">Sign up</button>
-            </article>
-          </form>
-        </div> <!-- card body -->
-      </div> <!-- card -->
-    </div> <!-- col -->
-  </div> <!-- row -->
-</div>
+{% with card_header='Sign up' button='Sign up' btn_double_wide='double-wide' input_double_wide=''%}
+  {% include 'includes/generic_form.html' %}
+{% endwith %}
 {% endblock %}

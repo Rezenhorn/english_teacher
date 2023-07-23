@@ -3,23 +3,23 @@
   Set up quiz
 {% endblock %}
 {% block content %}
-<a href="{% url "students:student_card" username %}" class="card-link">&lt; My card</a>
-<h2 class="text-center mb-4">Choose your quiz options</h2>
-<form class="d-flex flex-column gap-4 align-items-center" method="post">
-  {% csrf_token %}
-  {% for curr_form in form %}
-  <div class="form-group">
-    <h3 class="text-center mb-2">{{ curr_form.label_tag }}</h3>
-    {% for pk, choice in curr_form.field.widget.choices %}
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" id="id_{{ curr_form.name }}_{{ forloop.counter0 }}" name="{{ curr_form.name }}" type="{{ curr_form.field.widget.input_type }}" value="{{ pk }}">
-      <label for="id_{{ curr_form.name }}_{{ forloop.counter0 }}" class="form-check-label">{{ choice }}</label>
-    </div>
+<section class="setup-quiz">
+  <a class="breadcrumbs" href="{% url "students:student_card" username %}">&lt; My card</a>
+  <form class="setup-quiz__form" method="post">
+    <h2 class="setup-quiz__header">Choose your quiz options</h2>
+    {% csrf_token %}
+    {% for curr_form in form %}
+      <h3 class="setup-quiz__form-header">{{ curr_form.label_tag }}</h3>
+      <div class="setup-quiz__form-body">
+        {% for pk, choice in curr_form.field.widget.choices %}
+        <div class="setup-quiz__input-group">
+          <input id="id_{{ curr_form.name }}_{{ forloop.counter0 }}" name="{{ curr_form.name }}" type="{{ curr_form.field.widget.input_type }}" value="{{ pk }}">
+          <label class="setup-quiz__input-label" for="id_{{ curr_form.name }}_{{ forloop.counter0 }}">{{ choice }}</label>
+        </div>
+        {% endfor %}
+      </div>
     {% endfor %}
-  </div>
-  {% endfor %}
-  <div class="d-grid col-4 mx-auto mt-2">
-    <input class="btn btn-primary" type="submit" value="Start Quiz">
-  </div>
-</form>
+    <input class="btn btn-form btn-lg" type="submit" value="Start Quiz">
+  </form>
+</section>
 {% endblock %}

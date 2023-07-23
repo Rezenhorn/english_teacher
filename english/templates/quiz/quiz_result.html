@@ -1,30 +1,31 @@
 {% extends "base.html" %}
 {% block title %}
-  Vocabulary Quiz
+  Quiz Result
+{% endblock %}
+{% block stylesheets %}
+{% load static %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 {% endblock %}
 {% block content %}
-<div class="d-flex flex-column">
-  <a href="{% url "students:student_card" username %}" class="card-link">&lt; My card</a>
-  <a href="{% url "quiz:quiz_setup" username %}" class="card-link mb-4">&lt; Set up new quiz</a>
-</div>
-<p>Your score: {{ score }}</p>
-<div class="progress" role="progressbar" aria-valuenow="{{ result_percentage }}" aria-valuemin="0" aria-valuemax="100">
-  <div class="progress-bar bg-success" style="width: {{ result_percentage }}%">{{ result_percentage }}%</div>
-</div>
-<br>
-{% for question in questions %}
-  <div class="card {% if question.is_answer_correct %}border-success{% else %}border-danger{% endif %}">
-    <div class="card-body ms-4">
-      <h3 class="card-title">{{ question.word }}</h3>
+<div class="quiz">
+  <div class="quiz__breadcrumbs">
+    <a href="{% url "students:student_card" username %}">&lt; My card</a>
+    <a href="{% url "quiz:quiz_setup" username %}">&lt; Set up new quiz</a>
+  </div>
+  <p class="quiz__result">Your score: {{ score }}</p>
+  <div class="progress" role="progressbar" aria-valuenow="{{ result_percentage }}" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar bg-success" style="width: {{ result_percentage }}%">{{ result_percentage }}%</div>
+  </div>
+  {% for question in questions %}
+    <div class="card quiz-card {% if question.is_answer_correct %}card_success{% else %}card_wrong{% endif %}">
+      <h3 class="quiz-card__header">{{ question.word }}</h3>
       {% for option in question.options %}
       <div class="form-check">
-        <input class="form-check-input {% if option == question.word.translation %}is-valid{% else %}is-invalid{% endif %}" type="radio" value="{{ option }}" disabled {% if question.user_answer == option %}checked{% endif %}>
-        <label class="form-check-label {% if option == question.word.translation %}fw-bold{% endif %}">{{ option }}</label>
-        <br>
+        <input class="form-check-input {% if option == question.word.translation %}is-valid{% else %}is-invalid{% endif %}" type="radio" value="{{ option }}" id="{{ question.word }}.{{ option }}" disabled {% if question.user_answer == option %}checked{% endif %}>
+        <label class="quiz-card__label {% if option == question.word.translation %}fw-bold{% endif %}" for="{{ question.word }}.{{ option }}">{{ option }}</label>
       </div>
       {% endfor %}
     </div>
-  </div>
-  <br>
-{% endfor %}
+  {% endfor %}
+</div>
 {% endblock %}

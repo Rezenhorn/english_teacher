@@ -2,34 +2,36 @@
 {% block title %}
 Progress of {{ student }}
 {% endblock %}
+{% block stylesheets %}
+{% load static %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
 {% block content %}
-<h2 style="text-align: center">Progress of {{ student }}</h2>
-<hr>
-<div class="row">
-  <a href="{{ student.get_absolute_url }}" class="card-link">&lt; My card</a>
-</div>
-<br>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Topic</th>
-      <th scope="done">Done</th>
-    </tr>
-  </thead>
-  <tbody class="table-group-divider">
-    {% for topic in progress %}
-      <tr {% if topic.done %}class="table-success"{% endif %}>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ topic.topic }}</td>
-        <td>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" {% if topic.done %}checked{% endif %} {% if not request.user.is_superuser %}disabled{% endif %} value={{ topic.id }} name="boxes">
-          </div>
-        </td>
+<section class="progress-container">
+  <a href="{{ student.get_absolute_url }}" class="breadcrumbs">&lt; My card</a>
+  <h2 class="progress__header">Progress of {{ student }}</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Topic</th>
+        <th scope="done">Done</th>
       </tr>
-    {% endfor %}
-  </tbody>
-</table>
-{% include 'includes/paginator.html' %}
+    </thead>
+    <tbody class="table-group-divider">
+      {% for topic in progress %}
+        <tr {% if topic.done %}class="table-success"{% endif %}>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ topic.topic }}</td>
+          <td>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" {% if topic.done %}checked{% endif %} {% if not request.user.is_superuser %}disabled{% endif %} value={{ topic.id }} name="boxes">
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include 'includes/paginator.html' %}
+</section>
 {% endblock %}

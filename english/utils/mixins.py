@@ -40,3 +40,12 @@ class SuperuserOrAuthorMixin(UserPassesTestMixin):
                 self.get_redirect_field_name(),
             )
         return redirect("about:index")
+
+
+class UserOrSuperuserMixin(SuperuserOrAuthorMixin):
+    """
+    Access for superusers or if object is user.
+    """
+    def test_func(self):
+        return (self.request.user.is_superuser
+                or self.get_object() == self.request.user)

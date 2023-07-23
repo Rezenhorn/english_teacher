@@ -2,42 +2,512 @@
 {% block title %}
   Your Perfect Tutor
 {% endblock %}
-{% block content %}
 {% load static %}
-<div class="card text-center">
-  <div class="card-body">
-    <h2 class="card-title">Tutor Elizaveta Fomicheva</h5>
-    <p class="card-text">Personal website</p>
-    <a href="{% url 'about:about' %}" class="btn border-btn">About me</a>
-    {% if request.user.is_authenticated and not request.user.is_superuser %}
-    <a href="{% url 'students:student_card' request.user.username %}" class="btn btn-primary">  My card  </a>
-    {% elif request.user.is_superuser %}
-    <a href="{% url 'students:list' %}" class="btn btn-primary"> Students list </a>
-    {% else %}
-    <a href="{% url 'users:signup' %}" class="btn btn-primary"> Sign up </a>
-    <a href="{% url 'users:login' %}" class="btn border-btn">  Log in   </a>
-    {% endif %}
+{% block header %}
+  {% include 'includes/header_index.html' %}
+{% endblock %}
+{% block content %}
+<section class="section-title">
+  <div class="title section">
+    <div class="title__text">
+      <span class="subheading margin-bt-sm">Your personal tutor</span>
+      <h1 class="heading-primary margin-bt-md">
+        Tired of learning in wrong way?
+      </h1>
+      <p class="title__text--description">
+        I strongly believe that with the right person and strong
+        motivation you can master any skill. Well, if you are reading
+        this, it means you have enough motivation to start, and I believe
+        there is just the right person.
+      </p>
+      <div class="title__text--achievemnts margin-bt-lg">
+        <ion-icon name="ribbon-outline" class="icon"></ion-icon>
+        <p>
+          More than 30 people achieved their goals in learning English.
+        </p>
+      </div>
+      <div class="title__buttons">
+        {% if request.user.is_authenticated and not request.user.is_superuser %}
+        <a href="{% url 'students:student_card' request.user.username %}" class="btn btn-main btn-lg"> My card </a>
+        {% elif request.user.is_superuser %}
+        <a href="{% url 'students:list' %}" class="btn btn-main btn-lg"> Students list </a>
+        {% else %}
+        <a href="{% url 'users:signup' %}" class="btn btn-main btn-lg"> Sign up </a>
+        <a href="{% url 'users:login' %}" class="btn btn-second btn-lg">  Log in   </a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="title__picture">
+      <img
+        src={% static 'img/Liza.png' %}
+        class="title-img"
+        alt="Your personal tutor Elizabeth"
+      />
+    </div>
   </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-sm-6">
-    <div class="card text-center">
-      <div class="card-body">
-        <img src="{% static 'img/icon_mail.png' %}" height="45px" alt="">
-        <h5 class="card-title" style="padding-top: 10px">Email</h5>
-        <p class="card-text">endettalis@yandex.ru</p>
+</section>
+
+<section class="section-about" id="about">
+  <div class="about section">
+    <span class="subheading margin-bt-sm">Who am i?</span>
+    <h2 class="heading-secondary margin-bt-md">
+      I am a certified teacher of English with a huge experience
+    </h2>
+    <div class="progressbar">
+      <ul class="progressbar__list">
+        <li class="progressbar__list--item">
+          My career path began when I was only 16 and helped my tutor with
+          some of her students.
+        </li>
+        <li class="progressbar__list--item">
+          When I entered university teaching seemed a nice part-time job,
+          so I started preparing students for the state exams in an online
+          school.
+        </li>
+        <li class="progressbar__list--item">
+          After a year there I felt experienced enough to work for myself
+          and never regretted.
+        </li>
+        <li class="progressbar__list--item">
+          Now I work with people of all ages and levels of language.
+        </li>
+      </ul>
+    </div>
+    <div class="about__text">
+      <img
+        src={% static 'img/capysketch.jpg' %}
+        alt="Capybara Sketch"
+        class="about-img"
+      />
+      <p class="about__text--abstract">
+        In my job I use all techniques and sources. With my students we
+        discuss controversial issues, listen to songs, watch TED talks and
+        have fun. <span>Don't be afraid</span> to start learning English
+        because of your negative experience. With a strong motivation and
+        my help anyone will be able to reach their goals.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section-experience" id="experience">
+  <div class="experience">
+    <div class="experience__picture">
+      <img src={% static 'img/TEFL.jpg' %} alt="Certificate" class="experience-img" />
+    </div>
+
+    <div class="experience__text">
+      <span class="subheading margin-bt-sm">Experience</span>
+      <h2 class="heading-secondary margin-bt-md">
+        More than 9 years of experience
+      </h2>
+
+      <div class="experience__table">
+        <div class="experience__table--text">
+          <h3 class="heading-tertiary">Tutor of English</h3>
+        </div>
+        <span class="experience__table--time experience__table--time-1"
+          >2014 – now</span
+        >
+
+        <div class="experience__table--text">
+          <h3 class="heading-tertiary">
+            Saint Petersburg Peter the Great Polytechnic University
+          </h3>
+          <p>Nuclear engineering and thermal physics</p>
+        </div>
+        <span class="experience__table--time experience__table--time-2"
+          >2016 – 2020</span
+        >
+
+        <div class="experience__table--text">
+          <h3 class="heading-tertiary">Rosatom Technical Academy</h3>
+          <p>
+            Nuclear power plant personnel training specialist. Nuclear,
+            radiation and technical safety instructor (in English)
+          </p>
+        </div>
+        <span class="experience__table--time experience__table--time-3"
+          >2020 – 2021</span
+        >
+
+        <div class="experience__table--text">
+          <h3 class="heading-tertiary">TEFL/TESOL Certificate</h3>
+          <p>
+            International certificate for teachers of English as second
+            and foreign languages
+          </p>
+        </div>
+        <span class="experience__table--time experience__table--time-4"
+          >2022</span
+        >
       </div>
     </div>
   </div>
-  <div class="col-sm-6">
-    <div class="card text-center">
-      <div class="card-body">
-        <img src="{% static 'img/icon_messengers.png' %}" height="45px" alt="">
-        <h5 class="card-title" style="padding-top: 10px">Messengers</h5>
-        <p class="card-text"><a href="https://t.me/nomorewhores">Telegram</a></p>
+</section>
+
+<section class="section-testimonials" id="testimonials">
+  <div class="testimonials section">
+    <span class="subheading margin-bt-sm">Reviews</span>
+    <h2 class="heading-secondary margin-bt-md">
+      My students know better!
+    </h2>
+    <div class="testimonials__grid">
+      <figure class="review review--1">
+        <blockquote class="review__text">
+          Прекрасный преподаватель. Темы объясняет просто и быстро. Работа
+          идёт в приятной, дружелюбной обстановке. Буду рада сотрудничать
+          в дальнейшем.
+        </blockquote>
+        <figcaption class="review__user">
+          <img src={% static 'img/user-1.jpg' %} alt="User 1" class="review__photo" />
+          <div class="review__user-box">
+            <p class="review__user-name">Вероника</p>
+            <p class="review__user-age">Цель: повышение успеваемости</p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="review review--2">
+        <blockquote class="review__text">
+          Прекрасный преподаватель, занимаюсь с удовольствием!
+        </blockquote>
+        <figcaption class="review__user">
+          <img src={% static 'img/user-3.jpg' %} alt="User 2" class="review__photo" />
+          <div class="review__user-box">
+            <p class="review__user-name">Ева</p>
+            <p class="review__user-age">Цель: ОГЭ/ЕГЭ</p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="review review--3">
+        <blockquote class="review__text">
+          Мне очень нравятся наши занятия! Преподаватель потрясающе
+          обьясняет, мне легко понимать и запоминать информацию, на каждом
+          занятии старается заинтересовать, делает акцент на разговорном
+          английском, я считаю это очень важно. Также она создала свою
+          платформу, для более продуктивных занятий, там есть слова,
+          которые мы проходили на занятии и тд Мы быстро пришли к
+          взаимопониманию. Могу сказать, что это точно один из лучших
+          преподавателей!💗
+        </blockquote>
+        <figcaption class="review__user">
+          <img src={% static 'img/user-4.jpg' %} alt="User 3" class="review__photo" />
+          <div class="review__user-box">
+            <p class="review__user-name">Екатерина</p>
+            <p class="review__user-age">Цель: для себя</p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="review review--4">
+        <blockquote class="review__text">
+          Елизавета прекрасный преподаватель! Подобрала программу занятий
+          под определенные задачи, составляла списки слов, необходимых для
+          изучения, помогла прокачать лексику и грамматику. Спасибо!
+        </blockquote>
+        <figcaption class="review__user">
+          <img src={% static 'img/user-5.jpg' %} alt="User 4" class="review__photo" />
+          <div class="review__user-box">
+            <p class="review__user-name">Дмитрий</p>
+            <p class="review__user-age">
+              Цель: английский для нефтяников
+            </p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="review review--5">
+        <blockquote class="review__text">
+          Занятия проходили в дистанционном формате с февраля. Мы
+          готовились к ЕГЭ. Елизавета очень хороший и отзывчивый
+          преподаватель, я осталась всем довольна😁
+        </blockquote>
+        <figcaption class="review__user">
+          <img src={% static 'img/user-6.jpg' %} alt="User 5" class="review__photo" />
+          <div class="review__user-box">
+            <p class="review__user-name">Марта</p>
+            <p class="review__user-age">Цель: ЕГЭ</p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="review review--6">
+        <blockquote class="review__text">
+          Пришла к Елизавете Владимировне в декабре, еле набирая ничтожные
+          60 баллов из 100, сейчас же лучший результат - 89. По-моему,
+          неплохо, хотя есть еще, куда стремиться. Непонятные и трудные
+          темы объясняются четко, легко и доступно, подбирая необходимые
+          слова; формат экзамена тренируется каждое занятие с выписыванием
+          перевода фраз и подбором синонимов, что невероятно важно для
+          сдающего огэ/егэ ученика . Замечательная работа, чудесный
+          специалист.
+        </blockquote>
+        <figcaption class="review__user">
+          <img src={% static 'img/user-7.jpg' %} alt="User 6" class="review__photo" />
+          <div class="review__user-box">
+            <p class="review__user-name">Ксения</p>
+            <p class="review__user-age">Цель: ЕГЭ</p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="review review--7">
+        <blockquote class="review__text">
+          Place for your review!
+        </blockquote>
+        <figcaption class="review__user">
+          <img src={% static 'img/default.jpg' %} alt="User 7" class="review__photo" />
+          <div class="review__user-box">
+            <p class="review__user-name"></p>
+            <p class="review__user-age"></p>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section-prices" id="pricing">
+  <div class="prices section">
+    <span class="subheading margin-bt-sm">Prices</span>
+    <h2 class="heading-secondary margin-bt-md">Invest in your future</h2>
+
+    <div class="prices__grid">
+      <div class="prices__card">
+        <header class="prices__header">
+          <p class="prices__name">English for exams</p>
+          <p class="prices__number">1500</p>
+        </header>
+        <ul class="list">
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >9th grade exam
+          </li>
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >11th grade exam
+          </li>
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >International exams
+          </li>
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >60 minutes
+          </li>
+        </ul>
+      </div>
+      <div class="prices__card prices__card--special">
+        <header class="prices__header">
+          <p class="prices__name">General English</p>
+          <p class="prices__number">1500</p>
+        </header>
+        <ul class="list">
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >English for work
+          </li>
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >English for travelling
+          </li>
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >English for fun
+          </li>
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >60 minutes
+          </li>
+        </ul>
+      </div>
+      <div class="prices__card">
+        <header class="prices__header">
+          <p class="prices__name">English for specific purposes</p>
+          <p class="prices__number">1700</p>
+        </header>
+        <ul class="list">
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >Nuclear english
+          </li>
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >English for fitness trainers
+          </li>
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >IT English
+          </li>
+          <li class="list-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256"
+              class="list-icon"
+            >
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+              ></path></svg
+            >60 minutes
+          </li>
+        </ul>
       </div>
     </div>
   </div>
-</div>
+</section>
+
+{% comment %} <section class="section-cta section" id="cta">
+  <div class="cta">
+    <h2 class="cta__header">Get a free consultation</h2>
+
+    <form class="cta-form" action="#">
+      <div>
+        <label for="full-name">Full Name</label>
+        <input
+          id="full-name"
+          type="text"
+          placeholder="Anna Ivanova"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="phone">Phone Number</label>
+        <input
+          id="phone"
+          type="tel"
+          placeholder="+7 (000) 000 00 00"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="select-where">English Type</label>
+        <select id="select-where" required>
+          <option value="">Please choose 1 option</option>
+          <option value="general">General English</option>
+          <option value="exams">English for exams</option>
+          <option value="technical">Technical English</option>
+        </select>
+      </div>
+
+      <button class="btn-form">Sign up now</button>
+    </form>
+  </div>
+</section> {% endcomment %}
 {% endblock %}

@@ -23,6 +23,7 @@ class CreationForm(UserCreationForm):
 
 class UserEditForm(UserChangeForm):
     """User profile edit form."""
+    password = None
 
     class Meta(UserChangeForm.Meta):
         model = User

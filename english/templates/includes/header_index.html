@@ -1,0 +1,49 @@
+{% load static %}
+<header class="header sticky">
+  <a href="{% url 'about:index' %}">
+    <img class="logo" alt="Elizabeth Logo" src={% static 'img/CapyLOGO.png' %}>
+  </a>
+
+  <nav class="main-nav">
+    <ul class="main-nav__list">
+    <li>
+      <a class="main-nav-link" href="#about">About</a>
+    </li>
+    <li>
+      <a class="main-nav-link" href="#experience">Experience</a>
+    </li>
+    <li class="testimonial-nav">
+      <a class="main-nav-link" href="#testimonials">Testimonials</a>
+    </li>
+    <li>
+      <a class="main-nav-link" href="#pricing">Pricing</a>
+    </li>
+    {% if request.user.is_authenticated %}
+    <li class="main-nav-user dropdown">
+      <div class="dropbtn">{{ request.user }} &#9660;</div>
+      <div class="dropdown-content">
+        <a href="{% url 'users:password_change_form' %}">Change password</a>
+        <a href="{% url 'users:edit_profile' request.user.pk %}">Edit profile</a>
+        <a href="{% url 'users:logout' %}">Log out</a>
+      </div>
+    </li>
+    {% else %}
+    <li>
+      <a class="main-nav-user" href="{% url 'users:login' %}">
+      {% comment %} <img
+        src="img/default.jpg"
+        alt="User Photo"
+        class="main-nav-user-photo"
+      /> {% endcomment %}
+        <span class="main-nav-user-name">Log in</span>
+      </a>
+    </li>
+    {% endif %}
+    </ul>
+  </nav>
+
+  <button class="btn-mobile-nav">
+    <ion-icon class="icon-mobile-nav" name="menu-outline"></ion-icon>
+    <ion-icon class="icon-mobile-nav" name="close-outline"></ion-icon>
+  </button>
+</header>

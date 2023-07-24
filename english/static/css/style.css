@@ -731,7 +731,7 @@
 }
 
 .student-card {
-  margin: 4rem 6rem 2rem 6rem;
+  margin: 4rem 6rem;
   padding: 0;
   gap: 0;
   justify-content: space-between;
@@ -798,11 +798,6 @@
 /***************************/
 /*Homework-card*/
 /***************************/
-.update-btn-container {
-  display: flex;
-  justify-content: center;
-}
-
 .homework-card {
   background-color: #fff;
   margin: 2rem 6rem;

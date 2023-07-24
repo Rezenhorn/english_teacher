@@ -7,7 +7,7 @@ Confirm deletion
   <div class="cta">
     <h2 class="cta__header">Are you sure you want to delete this homework?</h2>
     <div class="confirm-delete__buttons">
-      <button class="btn btn-form" value="" onClick="javascript:history.go(-1);">Close</button>
+      <button class="btn btn-form" onClick="javascript:history.go(-1);">Close</button>
       <form action="" method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Delete</button>

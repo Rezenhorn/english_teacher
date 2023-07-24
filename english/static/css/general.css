@@ -122,6 +122,7 @@ main {
 .btn-danger {
   background-color: #d81c1c;
   color: #fff;
+  padding: 1.28rem;
 }
 
 .btn-danger:hover,

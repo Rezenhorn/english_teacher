@@ -43,8 +43,41 @@ function checkFlexGap() {
   document.body.appendChild(flex);
   var isSupported = flex.scrollHeight === 1;
   flex.parentNode.removeChild(flex);
-  console.log(isSupported);
 
   if (!isSupported) document.body.classList.add("no-flexbox-gap");
 }
 checkFlexGap();
+
+///////////////////////////////////////////////////////////
+// Toggling homework `done` attribute
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+$(document).ready(function() {
+  $('.toggle-btn').click(function() {
+    var currentUrl = window.location.href;
+    var hwId = $(this).data('hw-id');
+    var csrftoken = getCookie('csrftoken');
+    var homeworkCard = $(this).parent().parent()
+    $.ajax({
+      url: currentUrl,
+      type: 'POST',
+      headers: { 'X-CSRFToken': csrftoken },
+      data: {'hw_id': hwId },
+      success: function(response) {
+        homeworkCard.toggleClass('card_success');
+      }
+    });
+  });
+});

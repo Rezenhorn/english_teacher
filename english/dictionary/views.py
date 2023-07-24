@@ -2,7 +2,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -12,6 +11,7 @@ from utils.mixins import SuperuserOrAuthorMixin
 
 from .forms import DictionaryForm
 from .models import Dictionary
+from .selectors import get_words
 from .services import create_dictionary_xls
 
 User = get_user_model()
@@ -23,25 +23,21 @@ class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
     paginate_by = settings.DICTIONARY_WORDS_PER_PAGE
 
     def get_queryset(self):
-        queryset = Dictionary.objects.filter(
-            student__username=self.kwargs.get("username")
+        self.student = User.objects.get(username=self.kwargs.get("username"))
+        search_query = self.request.GET.get("q")
+        ordering = self.request.GET.get("o")
+        return get_words(
+            student=self.student,
+            search_query=search_query,
+            ordering=ordering
         )
-        if self.request.GET.get("o") == "date":
-            queryset = queryset.order_by("-date", "word")
-        query = self.request.GET.get("q")
-        if query:
-            queryset = queryset.filter(
-                Q(word__icontains=query) | Q(translation__icontains=query)
-            )
-        return queryset
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        student = get_object_or_404(User, username=self.kwargs.get("username"))
         data.update(
-            title=f"{student.first_name}'s dictionary",
-            student=student,
-            word_count=student.dictionary.count(),
+            title=f"{self.student.first_name}'s dictionary",
+            student=self.student,
+            word_count=len(self.object_list),
             order=self.request.GET.get("o"),
             query=self.request.GET.get("q"),
         )

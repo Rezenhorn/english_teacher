@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +7,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from utils.decorators import author_or_superuser_required
-from utils.messages import HOMEWORK_UPDATED_MESSAGE
 from utils.mixins import SuperuserOrAuthorMixin, SuperuserRequiredMixin
 
 from .forms import HomeworkForm
@@ -111,11 +109,10 @@ def student_card(request, username):
     student = get_object_or_404(User, username=username)
     homework = student.homework.all()
     if request.method == "POST":
-        id_list = request.POST.getlist("boxes")
-        homework.update(done=False)
-        for id in id_list:
-            homework.filter(pk=int(id)).update(done=True)
-        messages.success(request, HOMEWORK_UPDATED_MESSAGE)
+        hw_id = request.POST.get("hw_id")
+        homework = get_object_or_404(Homework, id=hw_id)
+        homework.done = not homework.done
+        homework.save()
         return redirect("students:student_card", username)
     context = {
         "page_obj": paginator(request.GET.get("page"), homework),

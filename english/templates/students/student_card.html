@@ -24,33 +24,27 @@
     </ul>
   </div>
   {% if student.homework.all %}
-  <form action="" method="POST">
-    {% csrf_token %}
-    <div class="update-btn-container">
-      <button class="btn btn-main" type="submit">Update homework statuses</button>
-    </div>
     {% for homework in page_obj %}
-    <div class="card homework-card{% if homework.done %} card_success{% endif %}">
-      <div class="homework-card__heading">
-        <h3 class="homework-card__header">Homework for {{ homework.date|date:"d E Y" }}</h3>
-        {% if request.user.is_superuser %}
-        <div class="homework-card__buttons">
-          <a class="homework-card__button" href="{% url 'students:edit_homework' student.username homework.pk %}" type="button">&#9998;</a>
-          <a class="homework-card__button" href="{% url 'students:delete_homework' student.username homework.pk %}" type="button">&#10006;</a>
+      <div class="card homework-card{% if homework.done %} card_success{% endif %}">
+        <div class="homework-card__heading">
+          <h3 class="homework-card__header">Homework for {{ homework.date|date:"d E Y" }}</h3>
+          {% if request.user.is_superuser %}
+          <div class="homework-card__buttons">
+            <a class="homework-card__button" href="{% url 'students:edit_homework' student.username homework.pk %}" type="button">&#9998;</a>
+            <a class="homework-card__button" href="{% url 'students:delete_homework' student.username homework.pk %}" type="button">&#10006;</a>
+          </div>
+          {% endif %}
         </div>
-        {% endif %}
+        <div class="homework-card__text">
+          {{ homework.description|linebreaks }}
+        </div>
+        <div class="homework-card__footer">
+          <input class="toggle-btn" type="checkbox" {% if homework.done %}checked{% endif %} data-hw-id="{{ homework.id }}" id="{{ homework.id }}">
+          <label class="homework-card__checkbox-label" for="{{ homework.id }}">Done</label>
+        </div>
       </div>
-      <div class="homework-card__text">
-        {{ homework.description|linebreaks }}
-      </div>
-      <div class="homework-card__footer">
-        <input class="homework-card__checkbox" type="checkbox" {% if homework.done %}checked{% endif %} value={{ homework.id }} id={{ homework.id }} name="boxes">
-        <label class="homework-card__checkbox-label" for="{{ homework.id }}">Done</label>
-      </div>
-    </div>
     {% endfor %}
-  </form>
-</section>
 {% include 'includes/paginator.html' %}
 {% endif %}
+</section>
 {% endblock %}

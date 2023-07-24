@@ -21,7 +21,7 @@ List of students
           <li class="accordion__list-item">
             <a class="accordion__link" href="{{ student.get_absolute_url }}">
               <h5>{{ student }}</h5>
-              <small>{{ student.aim }}</small>
+              <small class="accordion__link_subheading">{{ student.aim }}</small>
             </a>
           </li>
           {% endfor %}
@@ -39,9 +39,9 @@ List of students
         <ul class="accordion__list">
           {% for student in student_list.inactive %}
           <li class="accordion__list-item">
-            <a href="{{ student.get_absolute_url }}">
+            <a class="accordion__link" href="{{ student.get_absolute_url }}">
               <h5>{{ student }}</h5>
-              <small>{{ student.aim }}</small>
+              <small class="accordion__link_subheading">{{ student.aim }}</small>
             </a>
           </li>
           {% endfor %}

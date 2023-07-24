@@ -725,6 +725,11 @@
 /*STUDENT CARD*/
 /***************************/
 
+.student-card-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .student-card {
   margin: 4rem 6rem 2rem 6rem;
   padding: 0;
@@ -923,7 +928,7 @@
   max-height: 0;
   overflow: hidden;
   position: relative;
-  transition: max-height 650ms;
+  transition: max-height 1.5s;
 }
 
 .accordion__list {
@@ -940,7 +945,7 @@
   font-weight: 500;
   text-decoration: none;
   color: inherit;
-  transition: ease-in-out 0.2s;
+  transition: ease-in-out 0.3s;
 }
 
 .accordion__link:hover {
@@ -948,7 +953,12 @@
 }
 
 .accordion-item:target .accordion__content {
-  max-height: 20rem;
+  max-height: 100rem;
+}
+
+.accordion__link_subheading {
+  font-size: 1.6rem;
+  font-weight: 400;
 }
 
 .ion-md-arrow-forward,
@@ -960,7 +970,7 @@
 }
 
 .accordion-item:target .accordion-link .ion-md-arrow-forward {
-  display: none
+  display: none;
 }
 
 .accordion-item:target .accordion-link .ion-md-arrow-down {
@@ -1154,6 +1164,8 @@
   flex-direction: column;
   gap: 2rem;
   padding: 5rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .quiz-card {
@@ -1201,6 +1213,8 @@
 
 .progress-container {
   padding: 2rem 5rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .progress__header {

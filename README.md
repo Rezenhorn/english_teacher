@@ -14,11 +14,11 @@ The website is deployed and used for its intended purpose.
 
 ## :hammer_and_wrench: Techs:
 
-- Python 3.7.9
-- Django 3.2.19
+- Python 3.10
+- Django 3.2
 - PostgreSQL
 - Testing with Django unit tests
-- Bootstrap 5
+- HTML, CSS, Bootstrap 5
 - Docker, docker-compose, nginx and gunicorn
 - CI/CD using GitHub Actions
 

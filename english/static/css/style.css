@@ -761,6 +761,7 @@
 .student-card__text {
   font-weight: 400;
   font-size: 1.6rem;
+  line-height: 2.2rem;
   text-align: center;
   margin: 0;
 }
@@ -853,6 +854,7 @@
 .homework-card__text {
   font-weight: 400;
   font-size: 1.6rem;
+  line-height: 2.2rem;
 }
 
 .homework-card__footer {

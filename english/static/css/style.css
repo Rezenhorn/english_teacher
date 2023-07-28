@@ -14,6 +14,75 @@
 }
 
 /***************************/
+/*BUTTONS*/
+/***************************/
+
+.btn {
+  text-align: center;
+  font-size: 1.6rem;
+  padding: 1rem 2rem;
+  border-radius: 9px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  font-family: inherit;
+  transition: all 0.3s;
+}
+
+.btn-lg {
+  font-size: 2rem;
+  padding: 1.2rem 2.8rem;
+}
+
+.btn-main {
+  background-color: #1864ab;
+  color: #fff;
+}
+
+.btn-main:hover,
+.btn-main:active {
+  background-color: #1c7ed6;
+  color: #fff;
+}
+
+.btn-second {
+  background-color: #fff;
+  color: #1864ab;
+}
+
+.btn-second:hover,
+.btn-second:active {
+  box-shadow: inset 0 0 0 3px #1864ab;
+  color: #1864ab;
+}
+
+.btn-danger {
+  background-color: #d81c1c;
+  color: #fff;
+  padding: 1.3rem;
+}
+
+.btn-danger:hover,
+.btn-danger:active {
+  background-color: #f03f3f;
+  color: #fff;
+}
+
+.btn-form {
+  background-color: #1864ab;
+  color: #fff;
+  padding: 1.3rem;
+}
+
+.btn-form:hover,
+.btn-form:active {
+  color: #1864ab;
+  background-color: #fff;
+}
+
+/***************************/
 /*HEADER*/
 /***************************/
 .header {

@@ -37,7 +37,12 @@
         <small id="{{ field.id_for_label }}-help" class="cta-form__help-text">{{ field.help_text|safe }}</small>
       </div>
       {% endfor %}
-      <button type="submit" class="btn btn-form double-wide">{% if form.instance.pk %}Edit word{% else %}Add word{% endif %}</button>
+      {% if form.instance.pk %}
+      <a href="{% url 'dictionary:delete_word' username form.instance.pk %}" class="btn btn-danger">Delete word</a>
+      <button type="submit" class="btn btn-form">Edit word</button>
+      {% else %}
+      <button type="submit" class="btn btn-form double-wide">Add word</button>
+      {% endif %}
     </form>
   </div>
 </section>

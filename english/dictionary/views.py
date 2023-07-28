@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from utils.decorators import author_or_superuser_required
 from utils.mixins import SuperuserOrAuthorMixin
 
@@ -71,6 +71,27 @@ class DictionaryUpdateView(LoginRequiredMixin,
     model = Dictionary
     template_name = "dictionary/dictionary_form.html"
     pk_url_kwarg = "dictionary_id"
+
+    def get_success_url(self):
+        return reverse_lazy("dictionary:dictionary",
+                            kwargs={"username": self.kwargs.get("username")})
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data.update(
+            username=self.kwargs.get("username"),
+        )
+        return data
+
+
+class DictionaryDeleteView(LoginRequiredMixin,
+                           SuperuserOrAuthorMixin,
+                           DeleteView):
+    model = Dictionary
+    pk_url_kwarg = "dictionary_id"
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy("dictionary:dictionary",

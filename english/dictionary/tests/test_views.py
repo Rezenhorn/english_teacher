@@ -95,3 +95,25 @@ class DictionaryViewsTests(TestCase):
             response.get("Content-Disposition"),
             f"attachment; filename={self.student.username}'s_dict.xls"
         )
+
+    def test_user_can_delete_word(self):
+        """
+        User can delete word from Dictionary
+        and is redirected to correct page after.
+        """
+        response = self.authorized_client.post(
+            reverse("dictionary:delete_word",
+                    kwargs={"username": self.student.username,
+                            "dictionary_id": self.dictionary.id})
+        )
+        self.assertRedirects(
+            response,
+            reverse(
+                "dictionary:dictionary",
+                kwargs={"username": self.student.username}
+            )
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            Dictionary.objects.filter(id=self.dictionary.id).exists()
+        )

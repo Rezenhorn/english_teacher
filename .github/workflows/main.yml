@@ -78,7 +78,8 @@ jobs:
             sudo systemctl stop nginx
             sudo docker-compose stop
             sudo docker-compose rm web
-            rm .env
+            sudo docker volume rm -f ${{ secrets.DOCKER_USERNAME }}_static_value
+            rm -f .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env

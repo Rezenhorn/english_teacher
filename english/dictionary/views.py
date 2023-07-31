@@ -10,14 +10,14 @@ from utils.decorators import author_or_superuser_required
 from utils.mixins import SuperuserOrAuthorMixin
 
 from .forms import DictionaryForm
-from .models import Dictionary
+from .models import Word
 from .selectors import get_words
 from .services import create_dictionary_xls
 
 User = get_user_model()
 
 
-class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
+class WordListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
     template_name = "dictionary/dictionary.html"
     context_object_name = "dictionary"
     paginate_by = settings.DICTIONARY_WORDS_PER_PAGE
@@ -44,9 +44,7 @@ class DictionaryListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
         return data
 
 
-class DictionaryCreateView(LoginRequiredMixin,
-                           SuperuserOrAuthorMixin,
-                           CreateView):
+class WordCreateView(LoginRequiredMixin, SuperuserOrAuthorMixin, CreateView):
     form_class = DictionaryForm
     template_name = "dictionary/dictionary_form.html"
 
@@ -64,13 +62,11 @@ class DictionaryCreateView(LoginRequiredMixin,
         return data
 
 
-class DictionaryUpdateView(LoginRequiredMixin,
-                           SuperuserOrAuthorMixin,
-                           UpdateView):
+class WordUpdateView(LoginRequiredMixin, SuperuserOrAuthorMixin, UpdateView):
     form_class = DictionaryForm
-    model = Dictionary
+    model = Word
     template_name = "dictionary/dictionary_form.html"
-    pk_url_kwarg = "dictionary_id"
+    pk_url_kwarg = "word_id"
 
     def get_success_url(self):
         return reverse_lazy("dictionary:dictionary",
@@ -84,11 +80,9 @@ class DictionaryUpdateView(LoginRequiredMixin,
         return data
 
 
-class DictionaryDeleteView(LoginRequiredMixin,
-                           SuperuserOrAuthorMixin,
-                           DeleteView):
-    model = Dictionary
-    pk_url_kwarg = "dictionary_id"
+class WordDeleteView(LoginRequiredMixin, SuperuserOrAuthorMixin, DeleteView):
+    model = Word
+    pk_url_kwarg = "word_id"
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)

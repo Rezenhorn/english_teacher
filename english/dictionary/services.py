@@ -8,7 +8,7 @@ User = get_user_model()
 def create_dictionary_xls(username: str) -> xlwt.Workbook:
     """Return the excel workbook with student's dictionary."""
     workbook = xlwt.Workbook(encoding="utf-8")
-    worksheet = workbook.add_sheet("Dictionary")
+    worksheet = workbook.add_sheet("Word")
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
@@ -19,7 +19,7 @@ def create_dictionary_xls(username: str) -> xlwt.Workbook:
 
     font_style = xlwt.XFStyle()
     user = get_object_or_404(User, username=username)
-    rows = user.dictionary.values_list(
+    rows = user.words.values_list(
         "word", "transcription", "translation", "example"
     )
 

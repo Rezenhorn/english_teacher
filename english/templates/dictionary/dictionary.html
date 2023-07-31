@@ -57,7 +57,7 @@
           <td>{{ word.word }}</td>
           <td>{{ word.transcription }}</td>
           <td>{{ word.translation }}</td>
-          <td>{% if word.example %}{{ word.example }}{% else %} - {% endif %}</td>
+          <td>{{ word.example }}</td>
         </tr>
         {% endfor %}
       </tbody>

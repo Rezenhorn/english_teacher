@@ -5,13 +5,13 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from ..models import Dictionary
+from ..models import Word
 
 User = get_user_model()
 
 
 class DictionaryURLTests(TestCase):
-    """URL tests for application Dictionary."""
+    """URL tests for application Word."""
 
     @classmethod
     def setUpClass(cls):
@@ -23,7 +23,7 @@ class DictionaryURLTests(TestCase):
         cls.student_non_author = User.objects.create_user(
             username="student_non_author", birth_date="2000-01-01"
         )
-        cls.dictionary = Dictionary.objects.create(
+        cls.word = Word.objects.create(
             word="Test", translation="Тест", student=cls.student
         )
 
@@ -42,10 +42,10 @@ class DictionaryURLTests(TestCase):
              reverse("dictionary:add_word",
                      kwargs={"username": self.student.username})),
             (f"/dictionary/{self.student.username}/"
-             f"edit_word/{self.dictionary.pk}/",
+             f"edit_word/{self.word.pk}/",
              reverse("dictionary:edit_word",
                      kwargs={"username": self.student.username,
-                             "dictionary_id": self.dictionary.pk})),
+                             "word_id": self.word.pk})),
         ]
         for url, reverse_name in names:
             with self.subTest(url=url):
@@ -62,7 +62,7 @@ class DictionaryURLTests(TestCase):
                 HTTPStatus.OK),
             (reverse("dictionary:edit_word",
                      kwargs={"username": self.student.username,
-                             "dictionary_id": self.dictionary.pk}),
+                             "word_id": self.word.pk}),
                 HTTPStatus.OK),
         ]
         for reverse_name, http_status in reverse_names:
@@ -71,7 +71,7 @@ class DictionaryURLTests(TestCase):
                 self.assertEqual(response.status_code, http_status)
 
     def test_dictionary_redirect_for_non_author(self):
-        """Dictionary pages redirect another student to index page."""
+        """Word pages redirect another student to index page."""
         self.authorized_client.force_login(self.student_non_author)
         reverse_names = (
             reverse("dictionary:add_word",
@@ -80,7 +80,7 @@ class DictionaryURLTests(TestCase):
                     kwargs={"username": self.student.username}),
             reverse("dictionary:edit_word",
                     kwargs={"username": self.student.username,
-                            "dictionary_id": self.dictionary.pk}),
+                            "word_id": self.word.pk}),
         )
         for url in reverse_names:
             with self.subTest(url=url):
@@ -88,7 +88,7 @@ class DictionaryURLTests(TestCase):
                 self.assertRedirects(response, reverse("about:index"))
 
     def test_dictionary_url_redirect_anonymous_on_login(self):
-        """Dictionary pages redirect anonymous user to login page."""
+        """Word pages redirect anonymous user to login page."""
         url_names = (
             (
                 reverse(
@@ -125,13 +125,13 @@ class DictionaryURLTests(TestCase):
                     "dictionary:edit_word",
                     kwargs={
                         "username": self.student.username,
-                        "dictionary_id": self.dictionary.pk,
+                        "word_id": self.word.pk,
                     },
                 ),
                 urljoin(
                     reverse("users:login"),
                     (f"?next=/dictionary/{self.student.username}"
-                     f"/edit_word/{self.dictionary.id}/"),
+                     f"/edit_word/{self.word.id}/"),
                 ),
             ),
         )
@@ -151,7 +151,7 @@ class DictionaryURLTests(TestCase):
                     ): "dictionary/dictionary_form.html",
             reverse("dictionary:edit_word",
                     kwargs={"username": self.student.username,
-                            "dictionary_id": self.dictionary.pk}
+                            "word_id": self.word.pk}
                     ): "dictionary/dictionary_form.html",
         }
         for reverse_name, template in templates_pages_names.items():

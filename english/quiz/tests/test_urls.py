@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from urllib.parse import urljoin
 
-from dictionary.models import Dictionary
+from dictionary.models import Word
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -25,7 +25,7 @@ class QuizURLTests(TestCase):
             username="student_non_author", birth_date="2000-01-01"
         )
         for num in range(3):
-            Dictionary.objects.create(
+            Word.objects.create(
                 word=f"Test{num}",
                 translation=f"Тест{num}",
                 student=cls.student

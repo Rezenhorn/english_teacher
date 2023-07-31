@@ -1,4 +1,4 @@
-from dictionary.models import Dictionary
+from dictionary.models import Word
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -24,7 +24,7 @@ class QuizViewsTests(TestCase):
             username="student_non_author",
             birth_date="2000-01-01"
         )
-        cls.dictionary = Dictionary.objects.create(
+        cls.word = Word.objects.create(
             word="Test",
             translation="Тест",
             student=cls.student
@@ -32,8 +32,8 @@ class QuizViewsTests(TestCase):
         cls.quiz = Quiz.objects.create(student=cls.student)
         cls.question = Question.objects.create(
             quiz=cls.quiz,
-            word=cls.dictionary,
-            options=[cls.dictionary.translation, "random", "1"]
+            word=cls.word,
+            options=[cls.word.translation, "random", "1"]
         )
 
     def setUp(self):
@@ -71,7 +71,7 @@ class QuizViewsTests(TestCase):
         and user anser is saved to model.
         """
         form_data = {
-            self.dictionary.word: self.question.options[0]
+            self.word.word: self.question.options[0]
         }
         response = self.authorized_client.post(
             reverse("quiz:quiz",

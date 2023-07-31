@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import Dictionary
+from .models import Word
 
 
-@admin.register(Dictionary)
-class DictionaryAdmin(admin.ModelAdmin):
+@admin.register(Word)
+class WordAdmin(admin.ModelAdmin):
     list_display = (
         "word", "translation", "transcription", "example", "student", "date"
     )

@@ -1,4 +1,4 @@
-from dictionary.models import Dictionary
+from dictionary.models import Word
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
@@ -14,13 +14,13 @@ class QuizModelTest(TestCase):
         super().setUpClass()
         cls.student = User.objects.create_user(username="student",
                                                birth_date="2000-01-01")
-        cls.dictionary = Dictionary.objects.create(
+        cls.word = Word.objects.create(
             word="Test",
             translation="Тест",
             student=cls.student
         )
         for num in range(2):
-            Dictionary.objects.create(
+            Word.objects.create(
                 word=f"Test{num}",
                 translation=f"Тест{num}",
                 student=cls.student
@@ -28,14 +28,14 @@ class QuizModelTest(TestCase):
         cls.quiz = Quiz.objects.create(student=cls.student)
         cls.question_with_correct_answer = Question.objects.create(
             quiz=cls.quiz,
-            word=cls.dictionary,
-            options=["random", "2", cls.dictionary.translation],
-            user_answer=cls.dictionary.translation
+            word=cls.word,
+            options=["random", "2", cls.word.translation],
+            user_answer=cls.word.translation
         )
         cls.question_with_incorrect_answer = Question.objects.create(
             quiz=cls.quiz,
-            word=cls.dictionary,
-            options=["random", "2", cls.dictionary.translation],
+            word=cls.word,
+            options=["random", "2", cls.word.translation],
             user_answer="random"
         )
 

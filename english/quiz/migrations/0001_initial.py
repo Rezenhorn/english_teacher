@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('user_answer', models.CharField(blank=True, max_length=255, verbose_name='Answer of student')),
                 ('options', models.JSONField(default=list, help_text='Example: ["option1", "option2", "option3"]', verbose_name='Answer options')),
                 ('quiz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='questions', to='quiz.quiz')),
-                ('word', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='+', to='dictionary.dictionary')),
+                ('word', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='+', to='dictionary.word')),
             ],
         ),
     ]

@@ -1,4 +1,4 @@
-from dictionary.models import Dictionary
+from dictionary.models import Word
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -10,7 +10,7 @@ User = get_user_model()
 
 
 class QuizFormTests(TestCase):
-    """Forms tests of application Dictionary."""
+    """Forms tests of application Word."""
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -20,7 +20,7 @@ class QuizFormTests(TestCase):
             birth_date="2000-01-01"
         )
         for num in range(3):
-            Dictionary.objects.create(
+            Word.objects.create(
                 word=f"Test{num}",
                 translation=f"Тест{num}",
                 student=cls.student

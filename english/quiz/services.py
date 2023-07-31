@@ -1,7 +1,7 @@
 import random
 from typing import Iterable, Literal
 
-from dictionary.models import Dictionary
+from dictionary.models import Word
 from django.db import transaction
 from django.db.models import Count
 from users.models import User
@@ -19,34 +19,34 @@ class QuizService:
 
     def _get_dictionary_objects_all(
         self, questions_num: int
-    ) -> Iterable[Dictionary]:
-        """Returns `questions_num` Dictionary objects sorted randomly."""
-        all_words = Dictionary.objects.filter(student=self.student)
+    ) -> Iterable[Word]:
+        """Returns `questions_num` Word objects sorted randomly."""
+        all_words = Word.objects.filter(student=self.student)
         number_of_words = min(int(questions_num), all_words.count())
         return random.sample(list(all_words), number_of_words)
 
     def _get_dictionary_objects_last_lesson(
         self, questions_num: int
-    ) -> Iterable[Dictionary]:
+    ) -> Iterable[Word]:
         """
-        Returns `questions_num` Dictionary objects with the date
+        Returns `questions_num` Word objects with the date
         of last addition, sorted randomly.
         """
         last_lesson_words = (
-            Dictionary.objects.filter(student=self.student)
+            Word.objects.filter(student=self.student)
             .order_by("-date")[:1].values("date")
             .annotate(count=Count("date")).values_list("date", "count")
         )
         number_of_words = min(int(questions_num), last_lesson_words[0][1])
         return (
-            Dictionary.objects.filter(
+            Word.objects.filter(
                 student=self.student, date=last_lesson_words[0][0]
             ).order_by("?")[:number_of_words]
         )
 
-    def _create_question(self, word: Dictionary, quiz: Quiz) -> Question:
+    def _create_question(self, word: Word, quiz: Quiz) -> Question:
         translations_except_current = set(
-            Dictionary.objects.values_list("translation", flat=True)
+            self.student.words.values_list("translation", flat=True)
         )
         translations_except_current.discard(word.translation)
         try:

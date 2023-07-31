@@ -1,4 +1,4 @@
-from dictionary.models import Dictionary
+from dictionary.models import Word
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -37,7 +37,7 @@ class Question(models.Model):
         Quiz, on_delete=models.CASCADE, related_name="questions"
     )
     word = models.ForeignKey(
-        Dictionary, on_delete=models.CASCADE, related_name="+"
+        Word, on_delete=models.CASCADE, related_name="+"
     )
     user_answer = models.CharField(
         "Answer of student", max_length=255, blank=True

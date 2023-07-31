@@ -5,18 +5,17 @@ from django.db import models
 User = get_user_model()
 
 
-class Dictionary(models.Model):
+class Word(models.Model):
     word = models.CharField(max_length=50)
     translation = models.CharField(max_length=200)
     transcription = models.CharField(max_length=150, default="-")
     example = models.CharField(help_text="A sentence with the word",
                                max_length=150,
-                               blank=True,
-                               null=True)
+                               default="-")
     student = models.ForeignKey(User,
                                 verbose_name="Student",
                                 on_delete=models.CASCADE,
-                                related_name="dictionary")
+                                related_name="words")
     date = models.DateField("Addition date",
                             auto_now_add=True,
                             blank=True,
@@ -24,7 +23,6 @@ class Dictionary(models.Model):
 
     class Meta:
         ordering = ("word",)
-        verbose_name_plural = "Dictionaries"
 
     def save(self, *args, **kwargs):
         """
@@ -43,7 +41,7 @@ class Dictionary(models.Model):
             value = getattr(self, field_name, False)
             if value and not value.isupper():
                 setattr(self, field_name, value.capitalize())
-        super(Dictionary, self).save(*args, **kwargs)
+        super(Word, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.word

@@ -3,13 +3,13 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from ..forms import DictionaryForm
-from ..models import Dictionary
+from ..models import Word
 
 User = get_user_model()
 
 
 class DictionaryViewsTests(TestCase):
-    """Views tests for application Students."""
+    """Views tests for application dictionary."""
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -23,7 +23,7 @@ class DictionaryViewsTests(TestCase):
             birth_date="2000-01-01"
         )
         cls.superuser = User.objects.create_superuser(username="superuser")
-        cls.dictionary = Dictionary.objects.create(
+        cls.word = Word.objects.create(
             word="Test",
             translation="Тест",
             example="Test example",
@@ -37,7 +37,7 @@ class DictionaryViewsTests(TestCase):
         self.superuser_client.force_login(self.superuser)
 
     def test_create_pages_show_correct_context(self):
-        """Dictionary creation page is formed with correct context."""
+        """Word creation page is formed with correct context."""
         pages = (
             (reverse("dictionary:add_word",
                      kwargs={"username": self.student.username}),
@@ -49,12 +49,12 @@ class DictionaryViewsTests(TestCase):
                 self.assertIsInstance(response.context.get("form"), form)
 
     def test_edit_pages_show_correct_context(self):
-        """Dictionary edit page is formed with correct context."""
+        """Word edit page is formed with correct context."""
         pages = (
             (reverse("dictionary:edit_word",
                      kwargs={"username": self.student.username,
-                             "dictionary_id": self.dictionary.pk}),
-                DictionaryForm, self.dictionary),
+                             "word_id": self.word.pk}),
+                DictionaryForm, self.word),
         )
         for reverse_name, form, context in pages:
             with self.subTest(reverse_name=reverse_name):
@@ -63,11 +63,11 @@ class DictionaryViewsTests(TestCase):
                 self.assertEqual(response.context["form"].instance, context)
 
     def test_pages_show_correct_context(self):
-        """Dictionary page is formed with correct context."""
+        """Word page is formed with correct context."""
         pages = (
             (reverse("dictionary:dictionary",
                      kwargs={"username": self.student.username}),
-                self.dictionary),
+                self.word),
         )
         for reverse_name, object in pages:
             with self.subTest(reverse_name=reverse_name):
@@ -79,7 +79,7 @@ class DictionaryViewsTests(TestCase):
         pages = (
             (reverse("dictionary:dictionary",
                      kwargs={"username": self.student_non_author.username}),
-                self.dictionary),
+                self.word),
         )
         for reverse_name, object in pages:
             with self.subTest(reverse_name=reverse_name):
@@ -98,13 +98,13 @@ class DictionaryViewsTests(TestCase):
 
     def test_user_can_delete_word(self):
         """
-        User can delete word from Dictionary
+        User can delete word from Word
         and is redirected to correct page after.
         """
         response = self.authorized_client.post(
             reverse("dictionary:delete_word",
                     kwargs={"username": self.student.username,
-                            "dictionary_id": self.dictionary.id})
+                            "word_id": self.word.id})
         )
         self.assertRedirects(
             response,
@@ -115,5 +115,5 @@ class DictionaryViewsTests(TestCase):
         )
         self.assertEqual(response.status_code, 302)
         self.assertFalse(
-            Dictionary.objects.filter(id=self.dictionary.id).exists()
+            Word.objects.filter(id=self.word.id).exists()
         )

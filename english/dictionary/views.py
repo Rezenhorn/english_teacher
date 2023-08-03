@@ -9,7 +9,7 @@ from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from utils.decorators import author_or_superuser_required
 from utils.mixins import SuperuserOrAuthorMixin
 
-from .forms import DictionaryForm
+from .forms import WordForm
 from .models import Word
 from .selectors import get_words
 from .services import create_dictionary_xls
@@ -45,7 +45,7 @@ class WordListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
 
 
 class WordCreateView(LoginRequiredMixin, SuperuserOrAuthorMixin, CreateView):
-    form_class = DictionaryForm
+    form_class = WordForm
     template_name = "dictionary/dictionary_form.html"
 
     def form_valid(self, form):
@@ -63,7 +63,7 @@ class WordCreateView(LoginRequiredMixin, SuperuserOrAuthorMixin, CreateView):
 
 
 class WordUpdateView(LoginRequiredMixin, SuperuserOrAuthorMixin, UpdateView):
-    form_class = DictionaryForm
+    form_class = WordForm
     model = Word
     template_name = "dictionary/dictionary_form.html"
     pk_url_kwarg = "word_id"

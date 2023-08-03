@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from ..forms import DictionaryForm
+from ..forms import WordForm
 from ..models import Word
 
 User = get_user_model()
@@ -41,7 +41,7 @@ class DictionaryViewsTests(TestCase):
         pages = (
             (reverse("dictionary:add_word",
                      kwargs={"username": self.student.username}),
-                DictionaryForm),
+                WordForm),
         )
         for reverse_name, form in pages:
             with self.subTest(reverse_name=reverse_name):
@@ -54,7 +54,7 @@ class DictionaryViewsTests(TestCase):
             (reverse("dictionary:edit_word",
                      kwargs={"username": self.student.username,
                              "word_id": self.word.pk}),
-                DictionaryForm, self.word),
+                WordForm, self.word),
         )
         for reverse_name, form, context in pages:
             with self.subTest(reverse_name=reverse_name):

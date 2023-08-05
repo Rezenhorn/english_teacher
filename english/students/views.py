@@ -2,7 +2,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator
+from django.core.paginator import Page, Paginator
+from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
@@ -11,6 +12,7 @@ from utils.mixins import SuperuserOrAuthorMixin, SuperuserRequiredMixin
 
 from .forms import HomeworkForm
 from .models import Homework, Progress
+from .services import homework_toggle_done
 
 User = get_user_model()
 
@@ -96,9 +98,11 @@ class ProgressListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
         return data
 
 
-def paginator(page_number, posts):
+def paginator(
+    page_number: int | str | None, objects: QuerySet, per_page: int
+) -> Page:
     """Paginator for function based views."""
-    paginator = Paginator(posts, settings.HOMEWORK_PER_PAGE)
+    paginator = Paginator(objects, per_page)
     return paginator.get_page(page_number)
 
 
@@ -107,15 +111,16 @@ def paginator(page_number, posts):
 def student_card(request, username):
     template = "students/student_card.html"
     student = get_object_or_404(User, username=username)
-    homework = student.homework.all()
     if request.method == "POST":
-        hw_id = request.POST.get("hw_id")
-        homework = get_object_or_404(Homework, id=hw_id)
-        homework.done = not homework.done
-        homework.save()
+        homework_toggle_done(request.POST.get("hw_id"))
         return redirect("students:student_card", username)
+    homework = student.homework.all()
     context = {
-        "page_obj": paginator(request.GET.get("page"), homework),
+        "page_obj": paginator(
+            request.GET.get("page"),
+            homework,
+            settings.HOMEWORK_PER_PAGE
+        ),
         "student": student,
     }
     return render(request, template, context)

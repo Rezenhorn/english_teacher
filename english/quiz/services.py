@@ -32,17 +32,16 @@ class QuizService:
         Returns `questions_num` Word objects with the date
         of last addition, sorted randomly.
         """
-        last_lesson_words = (
+        last_lesson_date, last_lesson_num_words = (
             Word.objects.filter(student=self.student)
             .order_by("-date")[:1].values("date")
             .annotate(count=Count("date")).values_list("date", "count")
+            .first()
         )
-        number_of_words = min(int(questions_num), last_lesson_words[0][1])
-        return (
-            Word.objects.filter(
-                student=self.student, date=last_lesson_words[0][0]
-            ).order_by("?")[:number_of_words]
-        )
+        number_of_words = min(int(questions_num), last_lesson_num_words)
+        return Word.objects.filter(
+            student=self.student, date=last_lesson_date
+        ).order_by("?")[:number_of_words]
 
     def _create_question(self, word: Word, quiz: Quiz) -> Question:
         translations_except_current = set(

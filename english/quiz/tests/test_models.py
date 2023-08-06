@@ -19,12 +19,15 @@ class QuizModelTest(TestCase):
             translation="Тест",
             student=cls.student
         )
-        for num in range(2):
-            Word.objects.create(
+        words = [
+            Word(
                 word=f"Test{num}",
                 translation=f"Тест{num}",
                 student=cls.student
             )
+            for num in range(2)
+        ]
+        Word.objects.bulk_create(words)
         cls.quiz = Quiz.objects.create(student=cls.student)
         cls.question_with_correct_answer = Question.objects.create(
             quiz=cls.quiz,

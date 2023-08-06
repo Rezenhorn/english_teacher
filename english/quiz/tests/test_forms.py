@@ -19,12 +19,15 @@ class QuizFormTests(TestCase):
             username="student",
             birth_date="2000-01-01"
         )
-        for num in range(3):
-            Word.objects.create(
+        words = [
+            Word(
                 word=f"Test{num}",
                 translation=f"Тест{num}",
                 student=cls.student
             )
+            for num in range(3)
+        ]
+        Word.objects.bulk_create(words)
 
     def setUp(self):
         self.authorized_client = Client()

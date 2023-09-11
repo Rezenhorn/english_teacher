@@ -19,11 +19,14 @@
       <input class="dictionary-form__input" name="q" type="text" placeholder="Search..." id="wordSearch"{% if query %} value={{query}}{% endif %}>
 
       <label class="dictionary-form__label dictionary-form__label_order">Sort by</label>
-      <input class="dictionary-form__radio dictionary-form__radio_alphabet" type="radio" name="o" id="inlineRadio1" value="alphabet"{% if order != "date" %} checked{% endif %}>
+      <input class="dictionary-form__radio dictionary-form__radio_alphabet" type="radio" name="o" id="inlineRadio1" value="alphabet"{% if not order or order == "alphabet"%} checked{% endif %}>
       <label class="dictionary-form__radio-label dictionary-form__label-order_alphabet" for="inlineRadio1">Alphabet</label>
 
       <input class="dictionary-form__radio dictionary-form__radio_date" type="radio" name="o" id="inlineRadio2" value="date"{% if order == "date" %} checked{% endif %}>
       <label class="dictionary-form__radio-label dictionary-form__label-order_date" for="inlineRadio2">Date</label>
+
+      <input class="dictionary-form__radio dictionary-form__radio_translation" type="radio" name="o" id="inlineRadio3" value="translation"{% if order == "translation" %} checked{% endif %}>
+      <label class="dictionary-form__radio-label dictionary-form__label-order_translation" for="inlineRadio3">Translation</label>
       <button type="submit" class="btn btn-main dictionary-form__search-button">Search</button>
     </form>
   </div>
@@ -44,7 +47,7 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        {% for word in dictionary %}
+        {% for word in page_obj.object_list %}
         <tr>
           <td>
             <a href="{% url 'dictionary:edit_word' student.username word.pk %}">

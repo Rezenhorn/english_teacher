@@ -56,15 +56,13 @@ function getCookie(name) {
 }
 $(document).ready(function() {
   $('.toggle-btn').click(function() {
-    var currentUrl = window.location.href;
-    var hwId = $(this).data('hw-id');
+    var endpoint = $(this).data('endpoint');
     var csrftoken = getCookie('csrftoken');
-    var homeworkCard = $(this).parent().parent()
+    var homeworkCard = $(this).parent().parent();
     $.ajax({
-      url: currentUrl,
+      url: window.location.origin + endpoint,
       type: 'POST',
       headers: { 'X-CSRFToken': csrftoken },
-      data: {'hw_id': hwId },
       success: function(response) {
         homeworkCard.toggleClass('card_success');
       }

@@ -1096,8 +1096,8 @@
   grid-template-rows: 3rem 2rem 2rem;
   grid-template-areas:
   "label-input input input button"
-  "label-order radio_alphabet radio_date ."
-  ". label-order_alphabet label-order_date ."
+  "label-order radio_alphabet radio_date radio_translation"
+  ". label-order_alphabet label-order_date label-order_translation"
 }
 
 .dictionary-form__input {
@@ -1141,6 +1141,10 @@
   grid-area: radio_date;
 }
 
+.dictionary-form__radio_translation {
+  grid-area: radio_translation;
+}
+
 .dictionary-form__label_input {
   grid-area: label-input;
 }
@@ -1155,6 +1159,10 @@
 
 .dictionary-form__label-order_date {
   grid-area: label-order_date;
+}
+
+.dictionary-form__label-order_translation {
+  grid-area: label-order_translation;
 }
 
 .dictionary-form__search-button {

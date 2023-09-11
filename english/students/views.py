@@ -2,17 +2,20 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Page, Paginator
+from django.core.cache import cache
+from django.core.paginator import Page
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from utils.decorators import author_or_superuser_required
+from utils.json_helpers import deserialize_page_object, serialize_page_object
 from utils.mixins import SuperuserOrAuthorMixin, SuperuserRequiredMixin
+from utils.pagination import paginator
 
 from .forms import HomeworkForm
 from .models import Homework, Progress
-from .services import homework_toggle_done
+from .tasks import homework_toggle_done_task
 
 User = get_user_model()
 
@@ -98,29 +101,35 @@ class ProgressListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
         return data
 
 
-def paginator(
-    page_number: int | str | None, objects: QuerySet, per_page: int
-) -> Page:
-    """Paginator for function based views."""
-    paginator = Paginator(objects, per_page)
-    return paginator.get_page(page_number)
-
-
 @login_required
 @author_or_superuser_required
 def student_card(request, username):
     template = "students/student_card.html"
     student = get_object_or_404(User, username=username)
-    if request.method == "POST":
-        homework_toggle_done(request.POST.get("hw_id"))
-        return redirect("students:student_card", username)
-    homework = student.homework.all()
+    page: int = request.GET.get("page", 1)
+    cache_key: str = f"hw_{student.id}_{page}"
+    homework_page_obj = cache.get(cache_key)
+    if not homework_page_obj:
+        homework: QuerySet[Homework] = student.homework.all()
+        homework_page_obj: Page = paginator(
+            page, homework, settings.HOMEWORK_PER_PAGE
+        )
+        homework_page_obj: dict = serialize_page_object(homework_page_obj)
+        # TODO: пользовательский тип, посмотреть pydantic
+        cache.set(
+            cache_key,
+            homework_page_obj,
+            settings.CACHE_TTL_FOR_HOMEWORK
+        )
     context = {
-        "page_obj": paginator(
-            request.GET.get("page"),
-            homework,
-            settings.HOMEWORK_PER_PAGE
-        ),
+        "page_obj": deserialize_page_object(homework_page_obj),
         "student": student,
     }
     return render(request, template, context)
+
+
+@login_required
+@author_or_superuser_required
+def toggle_homework_done(request, username, homework_id):
+    homework_toggle_done_task.delay(homework_id=homework_id)
+    return redirect("students:student_card", username)

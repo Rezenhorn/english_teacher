@@ -8,21 +8,84 @@ services:
     env_file:
       - ./.env
 
-  web:
-    image: rezenhorn/english:latest
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    hostname: rabbitmq
     restart: always
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    env_file:
+      - ./.env
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+
+  base: &app_base
+    image: rezenhorn/english:latest
+    env_file:
+      - ./.env
+    # envirement:
+    #   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    # перенести из енва сюда? или 2 енв файла
+
+  web:
+    <<: *app_base
+    restart: always
+    command: gunicorn english.wsgi:application --bind 0:8000
+    ports:
+      - 8000:8000
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
+    depends_on: # TODO: посмотреть links
+      - db
+      - rabbitmq
+      - redis
+      - migrations
+      - collectstatic
+
+  migrations:
+    <<: *app_base
+    restart: on-failure
+    command: python manage.py migrate
     depends_on:
       - db
-    env_file:
-      - ./.env
+
+  collectstatic:
+    <<: *app_base
+    command: python manage.py collectstatic --noinput
+
+  celery:
+    <<: *app_base
+    command: celery -A english worker --loglevel=info
+    restart: on-failure
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - web
+      - redis
+      - rabbitmq
+
+  # test:
+  #   <<: *app_base
+  #   command: python manage.py test
+  #   depends_on:
+  #     - web
+  #     - db
+  #     - redis
+  #     - celery
+  #     - rabbitmq
 
   nginx:
     image: nginx:1.21.3-alpine
     ports:
-      - "80:80"
+      - 80:80
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - static_value:/var/html/static/
@@ -34,3 +97,4 @@ volumes:
   static_value:
   media_value:
   database:
+  rabbitmq:

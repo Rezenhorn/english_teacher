@@ -7,6 +7,9 @@ app_name = "students"
 urlpatterns = [
     path("", views.StudentListView.as_view(), name="list"),
     path("<str:username>/", views.student_card, name="student_card"),
+    path("<str:username>/toggle_homework_done/<int:homework_id>",
+         views.toggle_homework_done,
+         name="toggle_homework_done"),
     path("<str:username>/add_homework/",
          views.HomeworkCreateView.as_view(),
          name="add_homework"),

@@ -23,8 +23,8 @@
       <li><a class="student-card__nav-link" href="{% url 'students:progress' student.username %}">My progress</a></li>
     </ul>
   </div>
-  {% if student.homework.all %}
-    {% for homework in page_obj %}
+  {% if page_obj %}
+    {% for homework in page_obj.object_list %}
       <div class="card homework-card{% if homework.done %} card_success{% endif %}">
         <div class="homework-card__heading">
           <h3 class="homework-card__header">Homework for {{ homework.date|date:"d E Y" }}</h3>
@@ -39,12 +39,16 @@
           {{ homework.description|linebreaks }}
         </div>
         <div class="homework-card__footer">
-          <input class="toggle-btn" type="checkbox" {% if homework.done %}checked{% endif %} data-hw-id="{{ homework.id }}" id="{{ homework.id }}">
-          <label class="homework-card__checkbox-label" for="{{ homework.id }}">Done</label>
+          <input class="toggle-btn" type="checkbox"
+            {% if homework.done %}checked{% endif %}
+            data-endpoint="{% url 'students:toggle_homework_done' student.username homework.pk %}"
+            id="{{ homework.pk }}"
+          >
+          <label class="homework-card__checkbox-label" for="{{ homework.pk }}">Done</label>
         </div>
       </div>
     {% endfor %}
-{% include 'includes/paginator.html' %}
-{% endif %}
+  {% include 'includes/paginator.html' %}
+  {% endif %}
 </section>
 {% endblock %}

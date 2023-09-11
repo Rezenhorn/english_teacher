@@ -17,6 +17,24 @@ jobs:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
+      rabbitmq:
+        image: rabbitmq:3.11
+        ports:
+          - 5672:5672
+        env:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+
+      # celery:
+      #   image: ghcr.io/dima/celery:latest
+
+
+    # собрать контейнер в пайплайне
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
@@ -33,6 +51,8 @@ jobs:
         cd .. && rm -rf English-to-IPA-master/
     - name: Run migrations
       run: python english/manage.py migrate
+    - name: Run celery
+      run: celery -A english worker -D --loglevel=info
     - name: Test with flake8
       run: python -m flake8
     - name: Run python unittest
@@ -56,7 +76,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Push to Docker Hub
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v2
         with:
           context: english
           push: true
@@ -92,7 +112,9 @@ jobs:
             echo EMAIL_HOST=${{ secrets.EMAIL_HOST }} >> .env
             echo EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }} >> .env
             echo EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }} >> .env
+            echo RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} >> .env
+            echo RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }} >> .env
+            echo CELERY_BROKER_URL=${{ secrets.CELERY_BROKER_URL }} >> .env
+            echo CELERY_RESULT_BACKEND=${{ secrets.CELERY_RESULT_BACKEND }} >> .env
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/english:latest
             sudo docker-compose up -d
-            sudo docker-compose exec -T web python manage.py migrate
-            sudo docker-compose exec -T web python manage.py collectstatic --no-input

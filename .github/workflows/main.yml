@@ -52,7 +52,7 @@ jobs:
     - name: Run migrations
       run: python english/manage.py migrate
     - name: Run celery
-      run: celery -A english worker -D --loglevel=info
+      run: cd english && celery -A english worker -D --loglevel=info
     - name: Test with flake8
       run: python -m flake8
     - name: Run python unittest

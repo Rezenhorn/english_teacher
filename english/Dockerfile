@@ -7,5 +7,4 @@ RUN pip3 install -r ./requirements.txt --no-cache-di
 COPY deps/ deps/
 RUN cd deps/ && unzip English-to-IPA.zip && cd English-to-IPA-master/ && python -m pip install .
 COPY . .
-# CMD ["gunicorn", "english.wsgi:application", "--bind", "0:8000"]
 # TODO: usgi сделать

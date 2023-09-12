@@ -1,11 +1,11 @@
-from typing import Iterable
+from typing import Any, Iterable
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
@@ -51,7 +51,9 @@ class WordListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
         return queryset
 
     def get_queryset(self):
-        self.student = User.objects.get(username=self.kwargs.get("username"))
+        self.student: User = User.objects.get(
+            username=self.kwargs.get("username")
+        )
         search_query = self.request.GET.get("q")  # TODO: rename for normale
         ordering = self.request.GET.get("o")
         cache_key: str = f"dict_{self.student.id}"
@@ -66,7 +68,7 @@ class WordListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
             result = self.order_words(ordering, result)
         return list(result)
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
         data = super().get_context_data(**kwargs)
         data.update(
             title=f"{self.student.first_name}'s dictionary",
@@ -90,7 +92,7 @@ class WordCreateView(LoginRequiredMixin, SuperuserOrAuthorMixin, CreateView):
         dictionary.save()
         return redirect("dictionary:dictionary", username)
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
         data = super().get_context_data(**kwargs)
         data.update(username=self.kwargs.get("username"))
         return data
@@ -106,7 +108,7 @@ class WordUpdateView(LoginRequiredMixin, SuperuserOrAuthorMixin, UpdateView):
         return reverse_lazy("dictionary:dictionary",
                             kwargs={"username": self.kwargs.get("username")})
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
         data = super().get_context_data(**kwargs)
         data.update(
             username=self.kwargs.get("username"),
@@ -128,7 +130,7 @@ class WordDeleteView(LoginRequiredMixin, SuperuserOrAuthorMixin, DeleteView):
 
 @login_required
 @author_or_superuser_required
-def download_dictionary(request, username):
+def download_dictionary(request: HttpRequest, username: str) -> HttpResponse:
     """Provides download of the student's dictionary as .xls file."""
     response = HttpResponse(headers={
         "Content-Type": "application/vnd.ms-excel",

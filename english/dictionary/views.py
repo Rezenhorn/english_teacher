@@ -54,8 +54,8 @@ class WordListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
         self.student: User = User.objects.get(
             username=self.kwargs.get("username")
         )
-        search_query = self.request.GET.get("q")  # TODO: rename for normale
-        ordering = self.request.GET.get("o")
+        search_query = self.request.GET.get("query")
+        ordering = self.request.GET.get("ordering")
         cache_key: str = f"dict_{self.student.id}"
         dictionary = cache.get(cache_key)
         if not dictionary:
@@ -74,8 +74,8 @@ class WordListView(LoginRequiredMixin, SuperuserOrAuthorMixin, ListView):
             title=f"{self.student.first_name}'s dictionary",
             student=self.student,
             word_count=len(self.object_list),
-            order=self.request.GET.get("o"),
-            query=self.request.GET.get("q"),
+            order=self.request.GET.get("ordering"),
+            query=self.request.GET.get("query"),
         )
         return data
 

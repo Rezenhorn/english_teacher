@@ -2,11 +2,11 @@
 <nav aria-label="Page navigation" class="my-5">
   <ul class="pagination pagination-lg justify-content-center">
     {% if page_obj.has_previous %}
-      <li class="page-item {% if not order and not q and page_obj.number == 1 %}disabled{% endif %}">
-        <a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if order %}o={{ order }}{% endif %}&page=1">First</a>
+      <li class="page-item {% if not order and not query and page_obj.number == 1 %}disabled{% endif %}">
+        <a class="page-link" href="?{% if query %}query={{ query }}&{% endif %}{% if order %}ordering={{ order }}{% endif %}&page=1">First</a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if order %}o={{ order }}{% endif %}&page={{ page_obj.previous_page_number }}">Previous</a>
+        <a class="page-link" href="?{% if query %}query={{ query }}&{% endif %}{% if order %}ordering={{ order }}{% endif %}&page={{ page_obj.previous_page_number }}">Previous</a>
       </li>
     {% endif %}
     {% for i in page_obj.paginator.page_range %}
@@ -16,16 +16,16 @@
         </li>
       {% else %}
         <li class="page-item">
-          <a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if order %}o={{ order }}{% endif %}&page={{ i }}">{{ i }}</a>
+          <a class="page-link" href="?{% if query %}query={{ query }}&{% endif %}{% if order %}ordering={{ order }}{% endif %}&page={{ i }}">{{ i }}</a>
         </li>
       {% endif %}
     {% endfor %}
     {% if page_obj.has_next %}
       <li class="page-item">
-        <a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if order %}o={{ order }}{% endif %}&page={{ page_obj.next_page_number }}">Next</a>
+        <a class="page-link" href="?{% if query %}query={{ query }}&{% endif %}{% if order %}ordering={{ order }}{% endif %}&page={{ page_obj.next_page_number }}">Next</a>
       </li>
-      <li class="page-item {% if not order and not q and page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}">
-        <a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if order %}o={{ order }}{% endif %}&page={{ page_obj.paginator.num_pages }}">Last</a>
+      <li class="page-item {% if not order and not query and page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}">
+        <a class="page-link" href="?{% if query %}query={{ query }}&{% endif %}{% if order %}ordering={{ order }}{% endif %}&page={{ page_obj.paginator.num_pages }}">Last</a>
       </li>
     {% endif %}
   </ul>

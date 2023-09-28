@@ -19,6 +19,11 @@ services:
       - 15672:15672
     env_file:
       - ./.env
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
 
   redis:
     image: redis:latest
@@ -27,12 +32,10 @@ services:
       - 6379:6379
 
   base: &app_base
-    image: rezenhorn/english:latest
+    # image: rezenhorn/english:latest
+    build: ../english
     env_file:
       - ./.env
-    # envirement:
-    #   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    # перенести из енва сюда? или 2 енв файла
 
   web:
     <<: *app_base
@@ -43,7 +46,7 @@ services:
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
-    depends_on: # TODO: посмотреть links
+    depends_on:
       - db
       - rabbitmq
       - redis
@@ -63,24 +66,17 @@ services:
 
   celery:
     <<: *app_base
-    command: celery -A english worker --loglevel=info
+    command: celery -A english worker --uid=nobody --gid=nogroup --loglevel=info
     restart: on-failure
     volumes:
       - .:/usr/src/app
     depends_on:
-      - web
-      - redis
-      - rabbitmq
-
-  # test:
-  #   <<: *app_base
-  #   command: python manage.py test
-  #   depends_on:
-  #     - web
-  #     - db
-  #     - redis
-  #     - celery
-  #     - rabbitmq
+      web:
+        condition: service_started
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
 
   nginx:
     image: nginx:1.21.3-alpine
